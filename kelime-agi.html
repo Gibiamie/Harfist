@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Harfist Kelime Ağı v2</title>
+<title>Harfist Kelime Ağı</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;min-height:100dvh;overflow-x:hidden}
@@ -26,76 +26,35 @@ select{border:1px solid #ffffff22;border-radius:14px;background:#0f2033;color:#f
 @keyframes pulse{from{filter:brightness(1)}to{filter:brightness(1.18)}}
 .guessLine{display:flex;gap:8px}.guessBox{flex:1;min-height:48px;border:1px solid #ffffff22;border-radius:14px;background:#0f2033;display:flex;align-items:center;padding:0 12px;font-size:22px;font-weight:1000;letter-spacing:2px}
 .mainBtn{border:0;border-radius:14px;padding:0 16px;font-weight:1000;background:linear-gradient(135deg,#38bdf8,#35a853);color:#06120a}
-.keys{display:flex;flex-direction:column;gap:7px;margin-top:10px}.kr{display:flex;justify-content:center;gap:5px}.key{height:40px;min-width:28px;border:0;border-radius:10px;background:#334259;color:#fff;font-weight:1000}.key.action{min-width:66px;background:#e7edf5;color:#111}
+.keys{display:flex;flex-direction:column;gap:7px;margin-top:10px}.kr{display:flex;justify-content:center;gap:5px}.key{height:40px;min-width:28px;border:0;border-radius:10px;background:#334259;color:#fff;font-weight:1000}
+.key.action{min-width:66px;background:#e7edf5;color:#111}.key.green{background:#35a853!important}.key.yellow{background:#d7a72f!important}.key.gray{background:#ef6f6c!important;color:#fff!important}
 .wordsHead{display:flex;justify-content:space-between;align-items:center;cursor:pointer}.words{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:10px}.words.collapsed{display:none}
 .word{border:1px solid #ffffff22;border-radius:12px;background:#ffffff10;padding:9px;text-align:center;font-weight:900;color:#b7c6d8;cursor:pointer}.word.active{outline:2px solid #7dd3fc;color:#fff}.word.ok{background:#7dd3fc;color:#06120a}
 .blanks{letter-spacing:3px}.tryRow{display:grid;gap:6px;margin:7px 0}.tryCell{height:40px;border-radius:10px;background:#ffffff12;display:grid;place-items:center;font-weight:1000}.green{background:#35a853!important}.yellow{background:#d7a72f!important}.gray{background:#465163!important}
 .toast{position:fixed;top:72px;left:50%;transform:translateX(-50%);background:#fff;color:#111827;padding:11px 17px;border-radius:14px;font-weight:900;opacity:0;transition:.2s;max-width:92%;text-align:center;z-index:9}.toast.show{opacity:1}
-
-@media(min-width:760px){
- .app{max-width:760px}.cell{width:38px;height:38px;font-size:22px}.gridPanel{min-height:390px}
-}
-
+@media(min-width:760px){.app{max-width:760px}.cell{width:38px;height:38px;font-size:22px}.gridPanel{min-height:390px}}
 @media(min-width:1024px){
- .shell{align-items:flex-start}.app{width:96vw;max-width:1280px;padding:18px}
- .topArea{max-width:840px;margin:0 auto 12px}
- .game{display:grid;grid-template-columns:minmax(520px,760px) minmax(360px,430px);gap:18px;justify-content:center;align-items:start}
- .leftDesktop{display:flex;flex-direction:column;gap:12px}
- .rightDesktop{display:flex;flex-direction:column;gap:12px}
- .settingsPanel{order:1;margin:0}.gridPanel{order:2;min-height:500px;margin:0;border:1px solid #ffffff10;border-radius:24px;background:#ffffff06;padding:14px}
- .inputPanel,.wordsPanel{margin:0}
- .cell{width:44px;height:44px;border-radius:11px;font-size:26px}
- .grid{gap:6px}
- .words{grid-template-columns:1fr 1fr}
- .key{height:42px;min-width:31px}.key.action{min-width:74px}
- .guessBox{min-height:54px;font-size:26px}
-}
-
-@media(min-width:1500px){
- .app{max-width:1450px}.game{grid-template-columns:minmax(680px,850px) 450px;gap:24px}
- .cell{width:50px;height:50px;font-size:30px}.gridPanel{min-height:610px}
- .words{grid-template-columns:1fr}
- .key{min-width:34px;height:46px}.key.action{min-width:82px}
-}
-
-@media(max-height:780px) and (min-width:1024px){
- .app{padding:10px}.topArea{margin-bottom:6px}.panel{padding:10px}
- .gridPanel{min-height:440px}.cell{width:39px;height:39px;font-size:23px}.grid{gap:5px}
- .key{height:36px;min-width:29px}.guessBox{min-height:46px}.help{display:none}
- .word{padding:7px}.words{gap:6px}
-}
-
-/* V3 laptop fit: two-column compact layout, no giant vertical overflow */
-@media(min-width:1024px){
- .app{max-width:1180px;width:94vw;padding:12px}
+ .shell{align-items:flex-start}.app{width:96vw;max-width:1180px;padding:10px}
  .topArea{max-width:860px;margin:0 auto 6px}
- .game{grid-template-columns:minmax(520px,650px) 390px;gap:14px;align-items:start}
+ .game{display:grid;grid-template-columns:minmax(520px,650px) 390px;gap:14px;align-items:start;justify-content:center}
  .settingsPanel{padding:8px}.inputPanel,.wordsPanel{padding:10px}
- .gridPanel{min-height:430px;max-height:calc(100vh - 150px);overflow:hidden;padding:10px}
- .cell{width:34px;height:34px;border-radius:8px;font-size:20px}
- .grid{gap:5px}
+ .gridPanel{min-height:430px;max-height:calc(100vh - 150px);overflow:hidden;padding:10px;border:1px solid #ffffff10;border-radius:24px;background:#ffffff06}
+ .cell{width:34px;height:34px;border-radius:8px;font-size:20px}.grid{gap:5px}
  .key{height:34px;min-width:27px;font-size:13px}.key.action{min-width:66px}
- .guessBox{min-height:42px;font-size:22px}
- .word{padding:7px}.words{max-height:210px;overflow:auto}
- .help{display:none}
+ .guessBox{min-height:42px;font-size:22px}.word{padding:7px}.words{max-height:210px;overflow:auto}.help{display:none}
 }
-@media(min-width:1500px){
- .app{max-width:1250px}.game{grid-template-columns:minmax(620px,720px) 410px}
- .cell{width:39px;height:39px;font-size:23px}.gridPanel{min-height:500px}
-}
-
+@media(min-width:1500px){.app{max-width:1250px}.game{grid-template-columns:minmax(620px,720px) 410px}.cell{width:39px;height:39px;font-size:23px}.gridPanel{min-height:500px}}
 </style>
 </head>
 <body>
 <div class="shell"><div class="app">
   <div class="topArea">
     <div class="top">
-      <div class="brand"><div class="logo">H</div><div><h1>Kelime Ağı</h1><div id="status" class="sub">Sözlük yükleniyor...</div></div></div>
+      <div class="brand"><div class="logo">H</div><div><h1>Kelime Ağı</h1><div id="status" class="sub">Türkçe Kelime Ağı</div></div></div>
       <button class="btn" onclick="newPuzzle()">↻</button>
     </div>
     <div class="tabs"><button id="modePuzzle" class="tab active" onclick="setMode('puzzle')">Bulmaca Modu</button><button id="modeGuess" class="tab" onclick="setMode('guess')">Renkli Tahmin</button></div>
   </div>
-
   <div class="game">
     <div class="leftDesktop">
       <div class="panel settingsPanel">
@@ -109,7 +68,6 @@ select{border:1px solid #ffffff22;border-radius:14px;background:#0f2033;color:#f
       </div>
       <main class="gridPanel"><div id="grid" class="grid"></div></main>
     </div>
-
     <div class="rightDesktop">
       <div class="panel inputPanel">
         <div class="row"><b id="activeLabel">Önce kelime dizisi seç</b><span id="progress">0/0</span></div>
@@ -125,37 +83,49 @@ select{border:1px solid #ffffff22;border-radius:14px;background:#0f2033;color:#f
 </div></div>
 <div id="toast" class="toast"></div>
 <script>
-const VERSION='network_v2_layout';
+const VERSION='network_rules_v1';
 const TR=['E','R','T','Y','U','I','O','P','Ğ','Ü','A','S','D','F','G','H','J','K','L','Ş','İ','Z','C','V','B','N','M','Ö','Ç'], SET=new Set(TR);
-const FALLBACK='ACEMİ ARİFE ARİZA KİTAP KALEM DENİZ GÜNEŞ ÇİÇEK ŞEKER KÖPEK BULUT DÜNYA SABAH AKŞAM İNCİR BİBER PİLAV KİRAZ ÇİLEK GÜZEL SİMİT BİLGİ KAPAK KÜREK TABAK ÇANTA KEMER DOLAP RADYO FIRIN YAZAR KÖPRÜ SICAK SOĞUK KÜÇÜK BÜYÜK TEMİZ SAKİN TARİH TAKİP YAKIN ZAMAN YEMEK RESİM KURAL MUTLU HUZUR SEVGİ NEHİR YÜREK BEYAZ SİYAH YEŞİL ALTIN KUZEY GÜNEY ÇINAR ARMUT KAVUN LİMON BALIK SINIF MASAL MÜZİK SANAT PAZAR SAHİL MERAK CESUR GÜVEN BARIŞ ÇORBA EKMEK KAHVE KAŞIK ÇATAL TABLO PERDE LAMBA KİLİM BAKIR DEMİR ÇAMUR DİLEK NİYET HAYAL DOĞRU TATLI TUZLU GÖLGE ÇÖZÜM SAKAL ERZAK POTUK BUNAK CAHİL ÖDÜNÇ'.split(' ');
-let WORDS=[],SETWORDS=new Set(),puzzle=null,found=new Set(),guess='',mode='puzzle',attempts=[],selected=null;
+const GUARANTEE='ACEMİ ARİFE ARİZA KİTAP KALEM DENİZ GÜNEŞ ÇİÇEK ŞEKER KÖPEK BULUT DÜNYA SABAH AKŞAM İNCİR BİBER PİLAV KİRAZ ÇİLEK GÜZEL SİMİT BİLGİ KAPAK KÜREK TABAK ÇANTA KEMER DOLAP RADYO FIRIN YAZAR KÖPRÜ SICAK SOĞUK KÜÇÜK BÜYÜK TEMİZ SAKİN TARİH TAKİP YAKIN ZAMAN YEMEK RESİM KURAL MUTLU HUZUR SEVGİ NEHİR YÜREK BEYAZ SİYAH YEŞİL ALTIN KUZEY GÜNEY ÇINAR ARMUT KAVUN LİMON BALIK SINIF MASAL MÜZİK SANAT PAZAR SAHİL MERAK CESUR GÜVEN BARIŞ ÇORBA EKMEK KAHVE KAŞIK ÇATAL TABLO PERDE LAMBA KİLİM BAKIR DEMİR ÇAMUR DİLEK NİYET HAYAL DOĞRU TATLI TUZLU GÖLGE ÇÖZÜM SAKAL ERZAK POTUK BUNAK CAHİL ÖDÜNÇ'.split(' ');
+const BAD=new Set(['REYRİ','BANİK','BBBBB','GGGGG','AAAAA','CCCCC','MANTU','RENKL','ÇİFTÇ','KÖTÜL','YAPRA','YÜKSE','TAKİM','ADINA','ORASI','ORAYA','İTEĞİ','ANALI','TAÇLI','YÜKLÜ','EVDEŞ','AÇMAK','ATMAK','UYMAK','UÇMAK','EŞMEK']);
+let WORDS=[],WORDSET=new Set(),puzzle=null,found=new Set(),guess='',mode='puzzle',attempts=[],selected=null;
 function up(t){return(t||'').toString().trim().normalize('NFC').toLocaleUpperCase('tr-TR').replaceAll('Â','A').replaceAll('Î','İ').replaceAll('Û','U')}
-function isWord(w){w=up(w);return [...w].length>=3&&[...w].every(ch=>SET.has(ch))}
-function clean(a){let seen=new Set();return(Array.isArray(a)?a:[]).map(up).filter(w=>isWord(w)&&!seen.has(w)&&seen.add(w))}
-async function loadWords(){try{let r=await fetch('data/allowed_words.json?v='+VERSION,{cache:'no-store'});if(!r.ok)throw Error();WORDS=clean(await r.json());if(WORDS.length<100)throw Error()}catch(e){WORDS=clean(FALLBACK)}SETWORDS=new Set(WORDS);document.getElementById('status').textContent='Türkçe Kelime Ağı';buildKeyboard();newPuzzle()}
-function setMode(m){mode=m;attempts=[];guess='';document.getElementById('modePuzzle').classList.toggle('active',m==='puzzle');document.getElementById('modeGuess').classList.toggle('active',m==='guess');document.getElementById('modeHelp').textContent=m==='puzzle'?'Önce yeşil kelime dizisini seç, sonra kelimeyi yaz. Doğruysa ağda açılır.':'Önce yeşil kelime dizisini seç. Renkler sadece seçili kelimeye göre hesaplanır.';render()}
-function cfg(){let d=document.getElementById('difficulty').value;if(d==='easy')return{min:5,max:5,count:5,size:9};if(d==='medium')return{min:5,max:5,count:7,size:11};if(d==='hard')return{min:5,max:5,count:9,size:11};return{min:5,max:5,count:11,size:13}}
+function is5(w){w=up(w);return [...w].length===5&&[...w].every(ch=>SET.has(ch))}
+function clean(a){let seen=new Set();return(Array.isArray(a)?a:[]).map(up).filter(w=>is5(w)&&!BAD.has(w)&&!seen.has(w)&&seen.add(w))}
+async function loadWords(){
+  let raw=[];
+  try{let r=await fetch('data/answers.json?v='+VERSION,{cache:'no-store'});if(r.ok)raw=await r.json()}catch(e){}
+  WORDS=clean(raw);
+  if(WORDS.length<80)WORDS=clean(GUARANTEE);
+  GUARANTEE.forEach(w=>{w=up(w);if(is5(w)&&!BAD.has(w)&&!WORDS.includes(w))WORDS.push(w)});
+  WORDSET=new Set(WORDS);
+  document.getElementById('status').textContent='Türkçe Kelime Ağı';
+  buildKeyboard();newPuzzle();
+}
+function setMode(m){mode=m;attempts=[];guess='';resetKeyboard();document.getElementById('modePuzzle').classList.toggle('active',m==='puzzle');document.getElementById('modeGuess').classList.toggle('active',m==='guess');document.getElementById('modeHelp').textContent=m==='puzzle'?'Önce yeşil kelime dizisini seç, sonra kelimeyi yaz. Doğruysa ağda açılır.':'Önce yeşil kelime dizisini seç. Renkler sadece seçili kelimeye göre hesaplanır.';render()}
+function cfg(){let d=document.getElementById('difficulty').value;if(d==='easy')return{count:5,size:9};if(d==='medium')return{count:7,size:11};if(d==='hard')return{count:9,size:11};return{count:11,size:13}}
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function newPuzzle(){if(!WORDS.length)return;let c=cfg();for(let i=0;i<400;i++){let p=generate(c);if(p&&p.placed.length>=c.count){puzzle=p;found=new Set();guess='';attempts=[];selected=null;render();toast('Yeni bulmaca hazır');return}}toast('Bulmaca üretilemedi, tekrar dene.')}
-function generate(c){const size=c.size,g=Array.from({length:size},()=>Array(size).fill(''));const pool=shuffle(WORDS.filter(w=>[...w].length>=c.min&&[...w].length<=c.max)).slice(0,650);if(!pool.length)return null;const placed=[],first=pool.shift(),r=Math.floor(size/2),cc=Math.floor((size-[...first].length)/2);place(g,first,r,cc,'H');placed.push({id:0,word:first,r,c:cc,dir:'H'});let guard=0;while(placed.length<c.count&&guard++<2200){const word=pool[Math.floor(Math.random()*pool.length)];if(!word||placed.some(p=>p.word===word))continue;for(const o of shuffle(options(g,word,size))){const copy=g.map(x=>[...x]);if(canPlace(copy,word,o.r,o.c,o.dir)&&place(copy,word,o.r,o.c,o.dir)&&validate(copy)){for(let rr=0;rr<size;rr++)g[rr]=copy[rr];placed.push({id:placed.length,word,r:o.r,c:o.c,dir:o.dir});break}}}return{grid:g,placed,size}}
+function newPuzzle(){if(!WORDS.length)return;let c=cfg();for(let i=0;i<500;i++){let p=generate(c);if(p&&p.placed.length>=c.count){puzzle=p;found=new Set();guess='';attempts=[];selected=null;resetKeyboard();render();toast('Yeni bulmaca hazır');return}}toast('Bulmaca üretilemedi, tekrar dene.')}
+function generate(c){const size=c.size,g=Array.from({length:size},()=>Array(size).fill(''));const pool=shuffle(WORDS).slice(0,750);const placed=[],first=pool.shift(),r=Math.floor(size/2),cc=Math.floor((size-5)/2);place(g,first,r,cc,'H');placed.push({id:0,word:first,r,c:cc,dir:'H'});let guard=0;while(placed.length<c.count&&guard++<2600){const word=pool[Math.floor(Math.random()*pool.length)];if(!word||placed.some(p=>p.word===word))continue;for(const o of shuffle(options(g,word,size))){const copy=g.map(x=>[...x]);if(canPlace(copy,word,o.r,o.c,o.dir)&&place(copy,word,o.r,o.c,o.dir)&&validate(copy)){for(let rr=0;rr<size;rr++)g[rr]=copy[rr];placed.push({id:placed.length,word,r:o.r,c:o.c,dir:o.dir});break}}}return{grid:g,placed,size}}
 function options(g,w,size){const out=[],chars=[...w];for(let r=0;r<size;r++)for(let c=0;c<size;c++)if(g[r][c])chars.forEach((ch,i)=>{if(ch===g[r][c]){out.push({r,c:c-i,dir:'H'});out.push({r:r-i,c,dir:'V'})}});return out}
 function inside(g,r,c){return r>=0&&c>=0&&r<g.length&&c<g.length}
-function canPlace(g,w,r,c,dir){let ch=[...w],cross=0;for(let i=0;i<ch.length;i++){let rr=r+(dir==='V'?i:0),cc=c+(dir==='H'?i:0);if(!inside(g,rr,cc))return false;if(g[rr][cc]&&g[rr][cc]!==ch[i])return false;if(g[rr][cc]===ch[i])cross++}let br=r-(dir==='V'?1:0),bc=c-(dir==='H'?1:0),ar=r+(dir==='V'?ch.length:0),ac=c+(dir==='H'?ch.length:0);if(inside(g,br,bc)&&g[br][bc])return false;if(inside(g,ar,ac)&&g[ar][ac])return false;return cross>0}
+function canPlace(g,w,r,c,dir){let ch=[...w],cross=0;for(let i=0;i<5;i++){let rr=r+(dir==='V'?i:0),cc=c+(dir==='H'?i:0);if(!inside(g,rr,cc))return false;if(g[rr][cc]&&g[rr][cc]!==ch[i])return false;if(g[rr][cc]===ch[i])cross++}let br=r-(dir==='V'?1:0),bc=c-(dir==='H'?1:0),ar=r+(dir==='V'?5:0),ac=c+(dir==='H'?5:0);if(inside(g,br,bc)&&g[br][bc])return false;if(inside(g,ar,ac)&&g[ar][ac])return false;return cross>0}
 function place(g,w,r,c,dir){[...w].forEach((ch,i)=>g[r+(dir==='V'?i:0)][c+(dir==='H'?i:0)]=ch);return true}
 function segments(g){let out=[],n=g.length;for(let r=0;r<n;r++){let s='';for(let c=0;c<=n;c++){if(c<n&&g[r][c])s+=g[r][c];else{if(s.length>1)out.push(s);s=''}}}for(let c=0;c<n;c++){let s='';for(let r=0;r<=n;r++){if(r<n&&g[r][c])s+=g[r][c];else{if(s.length>1)out.push(s);s=''}}}return out}
-function validate(g){return segments(g).every(s=>s.length>=3&&SETWORDS.has(s))}
-function selectWord(p){if(!p||found.has(p.word))return;selected=p;guess='';attempts=[];render();toast([...p.word].length+' harfli kelime seçildi')}
+function validate(g){return segments(g).every(s=>s.length===5&&WORDSET.has(s))}
+function selectWord(p){if(!p||found.has(p.word))return;selected=p;guess='';attempts=[];resetKeyboard();render();toast('5 harfli kelime seçildi')}
 function cellClicked(r,c){const list=puzzle.placed.filter(p=>!found.has(p.word)&&inWord(r,c,p));if(list.length)selectWord(list[0])}
-function render(){if(!puzzle)return;let g=document.getElementById('grid');g.innerHTML='';g.style.gridTemplateColumns=`repeat(${puzzle.size},1fr)`;for(let r=0;r<puzzle.size;r++)for(let c=0;c<puzzle.size;c++){let d=document.createElement('div'),ch=puzzle.grid[r][c];d.className='cell '+(ch?'tile':'empty');if(ch){d.textContent=ch;d.onclick=()=>cellClicked(r,c);if(revealed(r,c))d.classList.add('reveal');if(selected&&inWord(r,c,selected))d.classList.add('selected')}g.appendChild(d)}document.getElementById('guessBox').textContent=guess;document.getElementById('progress').textContent=`${found.size}/${puzzle.placed.length}`;document.getElementById('activeLabel').textContent=selected?`Seçili: ${[...selected.word].length} harfli kelime`:'Önce kelime dizisi seç';renderWords();renderAttempts()}
-function renderWords(){let w=document.getElementById('words');w.innerHTML='';puzzle.placed.forEach(p=>{let d=document.createElement('div');d.className='word '+(found.has(p.word)?'ok':'')+(selected&&selected.id===p.id?' active':'');d.innerHTML=found.has(p.word)?'✓ '+p.word:'<span class="blanks">'+'□'.repeat([...p.word].length)+'</span>';d.onclick=e=>{e.stopPropagation();selectWord(p)};w.appendChild(d)})}
-function renderAttempts(){let a=document.getElementById('attempts');a.innerHTML='';if(mode!=='guess')return;attempts.slice(-5).forEach(x=>{let row=document.createElement('div');row.className='tryRow';row.style.gridTemplateColumns=`repeat(${[...x.word].length},1fr)`;[...x.word].forEach((ch,i)=>{let c=document.createElement('div');c.className='tryCell '+x.colors[i];c.textContent=ch;row.appendChild(c)});a.appendChild(row)})}
+function render(){if(!puzzle)return;let g=document.getElementById('grid');g.innerHTML='';g.style.gridTemplateColumns=`repeat(${puzzle.size},1fr)`;for(let r=0;r<puzzle.size;r++)for(let c=0;c<puzzle.size;c++){let d=document.createElement('div'),ch=puzzle.grid[r][c];d.className='cell '+(ch?'tile':'empty');if(ch){d.textContent=ch;d.onclick=()=>cellClicked(r,c);if(revealed(r,c))d.classList.add('reveal');if(selected&&inWord(r,c,selected))d.classList.add('selected')}g.appendChild(d)}document.getElementById('guessBox').textContent=guess;document.getElementById('progress').textContent=`${found.size}/${puzzle.placed.length}`;document.getElementById('activeLabel').textContent=selected?'Seçili: 5 harfli kelime':'Önce kelime dizisi seç';renderWords();renderAttempts()}
+function renderWords(){let w=document.getElementById('words');w.innerHTML='';puzzle.placed.forEach(p=>{let d=document.createElement('div');d.className='word '+(found.has(p.word)?'ok':'')+(selected&&selected.id===p.id?' active':'');d.innerHTML=found.has(p.word)?'✓ '+p.word:'<span class="blanks">□□□□□</span>';d.onclick=e=>{e.stopPropagation();selectWord(p)};w.appendChild(d)})}
+function renderAttempts(){let a=document.getElementById('attempts');a.innerHTML='';if(mode!=='guess')return;attempts.slice(-5).forEach(x=>{let row=document.createElement('div');row.className='tryRow';row.style.gridTemplateColumns='repeat(5,1fr)';[...x.word].forEach((ch,i)=>{let c=document.createElement('div');c.className='tryCell '+x.colors[i];c.textContent=ch;row.appendChild(c)});a.appendChild(row)})}
 function revealed(r,c){return puzzle.placed.some(p=>found.has(p.word)&&inWord(r,c,p))}
-function inWord(r,c,p){for(let i=0;i<[...p.word].length;i++)if(r===p.r+(p.dir==='V'?i:0)&&c===p.c+(p.dir==='H'?i:0))return true;return false}
-function buildKeyboard(){let k=document.getElementById('keys');k.innerHTML='';[['E','R','T','Y','U','I','O','P','Ğ','Ü'],['A','S','D','F','G','H','J','K','L','Ş','İ'],['Z','C','V','B','N','M','Ö','Ç','SİL']].forEach(row=>{let r=document.createElement('div');r.className='kr';row.forEach(x=>{let b=document.createElement('button');b.className=x==='SİL'?'key action':'key';b.textContent=x;b.onclick=()=>x==='SİL'?del():add(x);r.appendChild(b)});k.appendChild(r)})}
-function add(x){let max=selected?[...selected.word].length:12;if(guess.length<max){guess+=x;render()}}function del(){guess=guess.slice(0,-1);render()}
-function submitGuess(){let v=up(guess);guess='';if(!selected){render();toast('Önce bir kelime dizisi seç');return}if([...v].length!==[...selected.word].length){render();toast([...selected.word].length+' harfli kelime gir');return}if(mode==='guess')attempts.push({word:v,colors:score(v,selected.word)});if(v===selected.word){found.add(selected.word);selected=null;attempts=[];render();toast(found.size===puzzle.placed.length?'Tebrikler! Tüm kelimeler bulundu.':'Kelime bulundu!');return}render();toast(mode==='guess'?'İpucu verildi':'Yanlış kelime')}
-function score(g,t){let gg=[...g],tt=[...t],res=Array(gg.length).fill('gray'),used=Array(tt.length).fill(false);for(let i=0;i<gg.length;i++)if(gg[i]===tt[i]){res[i]='green';used[i]=true;gg[i]=null}for(let i=0;i<gg.length;i++){if(!gg[i])continue;let idx=tt.findIndex((ch,j)=>ch===gg[i]&&!used[j]);if(idx!==-1){res[i]='yellow';used[idx]=true}}return res}
-function hint(){const list=puzzle.placed.filter(p=>!found.has(p.word));if(!list.length)return;const p=selected&&!found.has(selected.word)?selected:list[Math.floor(Math.random()*list.length)];selectWord(p);toast([...p.word].length+' harfli kelime: '+p.word[0]+' ile başlıyor')}
+function inWord(r,c,p){for(let i=0;i<5;i++)if(r===p.r+(p.dir==='V'?i:0)&&c===p.c+(p.dir==='H'?i:0))return true;return false}
+function buildKeyboard(){let k=document.getElementById('keys');k.innerHTML='';[['E','R','T','Y','U','I','O','P','Ğ','Ü'],['A','S','D','F','G','H','J','K','L','Ş','İ'],['Z','C','V','B','N','M','Ö','Ç','SİL']].forEach(row=>{let r=document.createElement('div');r.className='kr';row.forEach(x=>{let b=document.createElement('button');b.className=x==='SİL'?'key action':'key';b.dataset.key=x;b.textContent=x;b.onclick=()=>x==='SİL'?del():add(x);r.appendChild(b)});k.appendChild(r)})}
+function resetKeyboard(){document.querySelectorAll('.key').forEach(k=>k.classList.remove('green','yellow','gray'))}
+function paintKey(ch,color){let k=document.querySelector(`.key[data-key="${ch}"]`);if(!k)return;let rank={gray:1,yellow:2,green:3},old=['green','yellow','gray'].find(c=>k.classList.contains(c));if(!old||rank[color]>rank[old]){k.classList.remove('green','yellow','gray');k.classList.add(color)}}
+function add(x){if(guess.length<5){guess+=x;render()}}function del(){guess=guess.slice(0,-1);render()}
+function submitGuess(){let v=up(guess);guess='';if(!selected){render();toast('Önce bir kelime dizisi seç');return}if(v.length!==5){render();toast('5 harfli kelime gir');return}if(!WORDSET.has(v)||BAD.has(v)){render();toast('Bu kelime uygun görünmüyor. Deneme hakkın gitmedi.');return}let colors=score(v,selected.word);if(mode==='guess'){attempts.push({word:v,colors});[...v].forEach((ch,i)=>paintKey(ch,colors[i]))}if(v===selected.word){found.add(selected.word);selected=null;attempts=[];resetKeyboard();render();toast(found.size===puzzle.placed.length?'Tebrikler! Tüm kelimeler bulundu.':'Kelime bulundu!');return}render();toast(mode==='guess'?'İpucu verildi':'Yanlış kelime')}
+function score(g,t){let gg=[...g],tt=[...t],res=Array(5).fill('gray'),used=Array(5).fill(false);for(let i=0;i<5;i++)if(gg[i]===tt[i]){res[i]='green';used[i]=true;gg[i]=null}for(let i=0;i<5;i++){if(!gg[i])continue;let idx=tt.findIndex((ch,j)=>ch===gg[i]&&!used[j]);if(idx!==-1){res[i]='yellow';used[idx]=true}}return res}
+function hint(){const list=puzzle.placed.filter(p=>!found.has(p.word));if(!list.length)return;const p=selected&&!found.has(selected.word)?selected:list[Math.floor(Math.random()*list.length)];selectWord(p);toast('5 harfli kelime: '+p.word[0]+' ile başlıyor')}
 function toggleWords(){let w=document.getElementById('words');w.classList.toggle('collapsed');document.getElementById('toggle').textContent=w.classList.contains('collapsed')?'▲':'▼'}
 function toast(m){let t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1700)}
 loadWords();
