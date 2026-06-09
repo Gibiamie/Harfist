@@ -83,10 +83,10 @@ select{border:1px solid #ffffff22;border-radius:14px;background:#0f2033;color:#f
 </div></div>
 <div id="toast" class="toast"></div>
 <script>
-const VERSION='network_rules_v1';
+const VERSION='network_rules_v2_strict';
 const TR=['E','R','T','Y','U','I','O','P','Ğ','Ü','A','S','D','F','G','H','J','K','L','Ş','İ','Z','C','V','B','N','M','Ö','Ç'], SET=new Set(TR);
 const GUARANTEE='ACEMİ ARİFE ARİZA KİTAP KALEM DENİZ GÜNEŞ ÇİÇEK ŞEKER KÖPEK BULUT DÜNYA SABAH AKŞAM İNCİR BİBER PİLAV KİRAZ ÇİLEK GÜZEL SİMİT BİLGİ KAPAK KÜREK TABAK ÇANTA KEMER DOLAP RADYO FIRIN YAZAR KÖPRÜ SICAK SOĞUK KÜÇÜK BÜYÜK TEMİZ SAKİN TARİH TAKİP YAKIN ZAMAN YEMEK RESİM KURAL MUTLU HUZUR SEVGİ NEHİR YÜREK BEYAZ SİYAH YEŞİL ALTIN KUZEY GÜNEY ÇINAR ARMUT KAVUN LİMON BALIK SINIF MASAL MÜZİK SANAT PAZAR SAHİL MERAK CESUR GÜVEN BARIŞ ÇORBA EKMEK KAHVE KAŞIK ÇATAL TABLO PERDE LAMBA KİLİM BAKIR DEMİR ÇAMUR DİLEK NİYET HAYAL DOĞRU TATLI TUZLU GÖLGE ÇÖZÜM SAKAL ERZAK POTUK BUNAK CAHİL ÖDÜNÇ'.split(' ');
-const BAD=new Set(['REYRİ','BANİK','BBBBB','GGGGG','AAAAA','CCCCC','MANTU','RENKL','ÇİFTÇ','KÖTÜL','YAPRA','YÜKSE','TAKİM','ADINA','ORASI','ORAYA','İTEĞİ','ANALI','TAÇLI','YÜKLÜ','EVDEŞ','AÇMAK','ATMAK','UYMAK','UÇMAK','EŞMEK']);
+const BAD=new Set(['REYRİ','BANİK','BBBBB','GGGGG','MMMMM','KKKKK','OOOOO','AAAAA','CCCCC','MANTU','RENKL','ÇİFTÇ','KÖTÜL','YAPRA','YÜKSE','TAKİM','ADINA','ORASI','ORAYA','İTEĞİ','ANALI','TAÇLI','YÜKLÜ','EVDEŞ','AÇMAK','ATMAK','UYMAK','UÇMAK','EŞMEK']);
 let WORDS=[],WORDSET=new Set(),puzzle=null,found=new Set(),guess='',mode='puzzle',attempts=[],selected=null;
 function up(t){return(t||'').toString().trim().normalize('NFC').toLocaleUpperCase('tr-TR').replaceAll('Â','A').replaceAll('Î','İ').replaceAll('Û','U')}
 function is5(w){w=up(w);return [...w].length===5&&[...w].every(ch=>SET.has(ch))}
@@ -98,6 +98,7 @@ async function loadWords(){
   if(WORDS.length<80)WORDS=clean(GUARANTEE);
   GUARANTEE.forEach(w=>{w=up(w);if(is5(w)&&!BAD.has(w)&&!WORDS.includes(w))WORDS.push(w)});
   WORDSET=new Set(WORDS);
+  console.log('Kelime Ağı strict dictionary', {total: WORDSET.size, MMMMM: WORDSET.has('MMMMM'), KOYUN: WORDSET.has('KOYUN'), ACEMI: WORDSET.has('ACEMİ')});
   document.getElementById('status').textContent='Türkçe Kelime Ağı';
   buildKeyboard();newPuzzle();
 }
@@ -123,7 +124,50 @@ function buildKeyboard(){let k=document.getElementById('keys');k.innerHTML='';[[
 function resetKeyboard(){document.querySelectorAll('.key').forEach(k=>k.classList.remove('green','yellow','gray'))}
 function paintKey(ch,color){let k=document.querySelector(`.key[data-key="${ch}"]`);if(!k)return;let rank={gray:1,yellow:2,green:3},old=['green','yellow','gray'].find(c=>k.classList.contains(c));if(!old||rank[color]>rank[old]){k.classList.remove('green','yellow','gray');k.classList.add(color)}}
 function add(x){if(guess.length<5){guess+=x;render()}}function del(){guess=guess.slice(0,-1);render()}
-function submitGuess(){let v=up(guess);guess='';if(!selected){render();toast('Önce bir kelime dizisi seç');return}if(v.length!==5){render();toast('5 harfli kelime gir');return}if(!WORDSET.has(v)||BAD.has(v)){render();toast('Bu kelime uygun görünmüyor. Deneme hakkın gitmedi.');return}let colors=score(v,selected.word);if(mode==='guess'){attempts.push({word:v,colors});[...v].forEach((ch,i)=>paintKey(ch,colors[i]))}if(v===selected.word){found.add(selected.word);selected=null;attempts=[];resetKeyboard();render();toast(found.size===puzzle.placed.length?'Tebrikler! Tüm kelimeler bulundu.':'Kelime bulundu!');return}render();toast(mode==='guess'?'İpucu verildi':'Yanlış kelime')}
+function submitGuess(){
+  let v=up(guess);
+  guess='';
+
+  if(!selected){
+    render();
+    toast('Önce bir kelime dizisi seç');
+    return;
+  }
+
+  if([...v].length!==5){
+    render();
+    toast('5 harfli kelime gir');
+    return;
+  }
+
+  // STRICT HARFIST RULE:
+  // No coloring, no keyboard paint, no attempt record unless the word exists in the approved Harfist answer set.
+  if(!WORDSET.has(v) || BAD.has(v)){
+    render();
+    toast('Bu kelime uygun görünmüyor. Deneme hakkın gitmedi.');
+    return;
+  }
+
+  const colors=score(v,selected.word);
+
+  if(mode==='guess'){
+    attempts.push({word:v,colors});
+    [...v].forEach((ch,i)=>paintKey(ch,colors[i]));
+  }
+
+  if(v===selected.word){
+    found.add(selected.word);
+    selected=null;
+    attempts=[];
+    resetKeyboard();
+    render();
+    toast(found.size===puzzle.placed.length?'Tebrikler! Tüm kelimeler bulundu.':'Kelime bulundu!');
+    return;
+  }
+
+  render();
+  toast(mode==='guess'?'İpucu verildi':'Yanlış kelime');
+}
 function score(g,t){let gg=[...g],tt=[...t],res=Array(5).fill('gray'),used=Array(5).fill(false);for(let i=0;i<5;i++)if(gg[i]===tt[i]){res[i]='green';used[i]=true;gg[i]=null}for(let i=0;i<5;i++){if(!gg[i])continue;let idx=tt.findIndex((ch,j)=>ch===gg[i]&&!used[j]);if(idx!==-1){res[i]='yellow';used[idx]=true}}return res}
 function hint(){const list=puzzle.placed.filter(p=>!found.has(p.word));if(!list.length)return;const p=selected&&!found.has(selected.word)?selected:list[Math.floor(Math.random()*list.length)];selectWord(p);toast('5 harfli kelime: '+p.word[0]+' ile başlıyor')}
 function toggleWords(){let w=document.getElementById('words');w.classList.toggle('collapsed');document.getElementById('toggle').textContent=w.classList.contains('collapsed')?'▲':'▼'}
