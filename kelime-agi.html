@@ -83,24 +83,53 @@ select{border:1px solid #ffffff22;border-radius:14px;background:#0f2033;color:#f
 </div></div>
 <div id="toast" class="toast"></div>
 <script>
-const VERSION='network_rules_v2_strict';
+const VERSION='network_rules_v3_dual_dictionary';
 const TR=['E','R','T','Y','U','I','O','P','Ğ','Ü','A','S','D','F','G','H','J','K','L','Ş','İ','Z','C','V','B','N','M','Ö','Ç'], SET=new Set(TR);
 const GUARANTEE='ACEMİ ARİFE ARİZA KİTAP KALEM DENİZ GÜNEŞ ÇİÇEK ŞEKER KÖPEK BULUT DÜNYA SABAH AKŞAM İNCİR BİBER PİLAV KİRAZ ÇİLEK GÜZEL SİMİT BİLGİ KAPAK KÜREK TABAK ÇANTA KEMER DOLAP RADYO FIRIN YAZAR KÖPRÜ SICAK SOĞUK KÜÇÜK BÜYÜK TEMİZ SAKİN TARİH TAKİP YAKIN ZAMAN YEMEK RESİM KURAL MUTLU HUZUR SEVGİ NEHİR YÜREK BEYAZ SİYAH YEŞİL ALTIN KUZEY GÜNEY ÇINAR ARMUT KAVUN LİMON BALIK SINIF MASAL MÜZİK SANAT PAZAR SAHİL MERAK CESUR GÜVEN BARIŞ ÇORBA EKMEK KAHVE KAŞIK ÇATAL TABLO PERDE LAMBA KİLİM BAKIR DEMİR ÇAMUR DİLEK NİYET HAYAL DOĞRU TATLI TUZLU GÖLGE ÇÖZÜM SAKAL ERZAK POTUK BUNAK CAHİL ÖDÜNÇ'.split(' ');
 const BAD=new Set(['REYRİ','BANİK','BBBBB','GGGGG','MMMMM','KKKKK','OOOOO','AAAAA','CCCCC','MANTU','RENKL','ÇİFTÇ','KÖTÜL','YAPRA','YÜKSE','TAKİM','ADINA','ORASI','ORAYA','İTEĞİ','ANALI','TAÇLI','YÜKLÜ','EVDEŞ','AÇMAK','ATMAK','UYMAK','UÇMAK','EŞMEK']);
-let WORDS=[],WORDSET=new Set(),puzzle=null,found=new Set(),guess='',mode='puzzle',attempts=[],selected=null;
+let WORDS=[],WORDSET=new Set(),VALIDSET=new Set(),puzzle=null,found=new Set(),guess='',mode='puzzle',attempts=[],selected=null;
 function up(t){return(t||'').toString().trim().normalize('NFC').toLocaleUpperCase('tr-TR').replaceAll('Â','A').replaceAll('Î','İ').replaceAll('Û','U')}
 function is5(w){w=up(w);return [...w].length===5&&[...w].every(ch=>SET.has(ch))}
 function clean(a){let seen=new Set();return(Array.isArray(a)?a:[]).map(up).filter(w=>is5(w)&&!BAD.has(w)&&!seen.has(w)&&seen.add(w))}
 async function loadWords(){
-  let raw=[];
-  try{let r=await fetch('data/answers.json?v='+VERSION,{cache:'no-store'});if(r.ok)raw=await r.json()}catch(e){}
-  WORDS=clean(raw);
+  let answersRaw=[], allowedRaw=[];
+  try{
+    let r=await fetch('data/answers.json?v='+VERSION,{cache:'no-store'});
+    if(r.ok)answersRaw=await r.json();
+  }catch(e){}
+
+  try{
+    let r=await fetch('data/allowed_words.json?v='+VERSION,{cache:'no-store'});
+    if(r.ok)allowedRaw=await r.json();
+  }catch(e){}
+
+  // Puzzle answers: only Harfist clean answer pool.
+  WORDS=clean(answersRaw);
   if(WORDS.length<80)WORDS=clean(GUARANTEE);
-  GUARANTEE.forEach(w=>{w=up(w);if(is5(w)&&!BAD.has(w)&&!WORDS.includes(w))WORDS.push(w)});
+
+  // Accepted guesses: wider approved dictionary, still 5-letter Turkish only.
+  let validWords=clean([...allowedRaw, ...answersRaw, ...GUARANTEE]);
+
+  ['PEDAL','NEZİH','CAHİL','ÖDÜNÇ','ERZAK','SAKAL','POTUK','BUNAK','ÇÖZÜM','ACEMİ']
+    .forEach(w=>{
+      w=up(w);
+      if(is5(w) && !BAD.has(w) && !validWords.includes(w)) validWords.push(w);
+    });
+
   WORDSET=new Set(WORDS);
-  console.log('Kelime Ağı strict dictionary', {total: WORDSET.size, MMMMM: WORDSET.has('MMMMM'), KOYUN: WORDSET.has('KOYUN'), ACEMI: WORDSET.has('ACEMİ')});
+  VALIDSET=new Set(validWords);
+
+  console.log('Kelime Ağı dictionaries', {
+    answers: WORDSET.size,
+    valid: VALIDSET.size,
+    PEDAL: VALIDSET.has('PEDAL'),
+    NEZIH: VALIDSET.has('NEZİH'),
+    MMMMM: VALIDSET.has('MMMMM')
+  });
+
   document.getElementById('status').textContent='Türkçe Kelime Ağı';
-  buildKeyboard();newPuzzle();
+  buildKeyboard();
+  newPuzzle();
 }
 function setMode(m){mode=m;attempts=[];guess='';resetKeyboard();document.getElementById('modePuzzle').classList.toggle('active',m==='puzzle');document.getElementById('modeGuess').classList.toggle('active',m==='guess');document.getElementById('modeHelp').textContent=m==='puzzle'?'Önce yeşil kelime dizisini seç, sonra kelimeyi yaz. Doğruysa ağda açılır.':'Önce yeşil kelime dizisini seç. Renkler sadece seçili kelimeye göre hesaplanır.';render()}
 function cfg(){let d=document.getElementById('difficulty').value;if(d==='easy')return{count:5,size:9};if(d==='medium')return{count:7,size:11};if(d==='hard')return{count:9,size:11};return{count:11,size:13}}
@@ -142,9 +171,9 @@ function submitGuess(){
 
   // STRICT HARFIST RULE:
   // No coloring, no keyboard paint, no attempt record unless the word exists in the approved Harfist answer set.
-  if(!WORDSET.has(v) || BAD.has(v)){
+  if(!VALIDSET.has(v) || BAD.has(v)){
     render();
-    toast('Bu kelime uygun görünmüyor. Deneme hakkın gitmedi.');
+    toast('Bu tahmin geçerli sayılmadı. Deneme hakkın gitmedi.');
     return;
   }
 
