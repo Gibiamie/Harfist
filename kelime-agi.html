@@ -64,6 +64,26 @@ select{border:1px solid #ffffff22;border-radius:14px;background:#0f2033;color:#f
  .key{height:36px;min-width:29px}.guessBox{min-height:46px}.help{display:none}
  .word{padding:7px}.words{gap:6px}
 }
+
+/* V3 laptop fit: two-column compact layout, no giant vertical overflow */
+@media(min-width:1024px){
+ .app{max-width:1180px;width:94vw;padding:12px}
+ .topArea{max-width:860px;margin:0 auto 6px}
+ .game{grid-template-columns:minmax(520px,650px) 390px;gap:14px;align-items:start}
+ .settingsPanel{padding:8px}.inputPanel,.wordsPanel{padding:10px}
+ .gridPanel{min-height:430px;max-height:calc(100vh - 150px);overflow:hidden;padding:10px}
+ .cell{width:34px;height:34px;border-radius:8px;font-size:20px}
+ .grid{gap:5px}
+ .key{height:34px;min-width:27px;font-size:13px}.key.action{min-width:66px}
+ .guessBox{min-height:42px;font-size:22px}
+ .word{padding:7px}.words{max-height:210px;overflow:auto}
+ .help{display:none}
+}
+@media(min-width:1500px){
+ .app{max-width:1250px}.game{grid-template-columns:minmax(620px,720px) 410px}
+ .cell{width:39px;height:39px;font-size:23px}.gridPanel{min-height:500px}
+}
+
 </style>
 </head>
 <body>
@@ -80,10 +100,10 @@ select{border:1px solid #ffffff22;border-radius:14px;background:#0f2033;color:#f
     <div class="leftDesktop">
       <div class="panel settingsPanel">
         <div class="row"><select id="difficulty" onchange="newPuzzle()">
-          <option value="easy">Kolay • 3-5 harf • 5 kelime</option>
-          <option value="medium" selected>Orta • 4-6 harf • 7 kelime</option>
-          <option value="hard">Zor • 5-8 harf • 9 kelime</option>
-          <option value="expert">Uzman • 6+ harf • 12 kelime</option>
+          <option value="easy">Kolay • 5 harf • 5 kelime</option>
+          <option value="medium" selected>Orta • 5 harf • 7 kelime</option>
+          <option value="hard">Zor • 5 harf • 9 kelime</option>
+          <option value="expert">Uzman • 5 harf • 11 kelime</option>
         </select><button class="btn" onclick="hint()">İpucu</button></div>
         <p class="help" id="modeHelp">Önce yeşil kelime dizisini seç, sonra kelimeyi yaz. Doğruysa ağda açılır.</p>
       </div>
@@ -112,9 +132,9 @@ let WORDS=[],SETWORDS=new Set(),puzzle=null,found=new Set(),guess='',mode='puzzl
 function up(t){return(t||'').toString().trim().normalize('NFC').toLocaleUpperCase('tr-TR').replaceAll('Â','A').replaceAll('Î','İ').replaceAll('Û','U')}
 function isWord(w){w=up(w);return [...w].length>=3&&[...w].every(ch=>SET.has(ch))}
 function clean(a){let seen=new Set();return(Array.isArray(a)?a:[]).map(up).filter(w=>isWord(w)&&!seen.has(w)&&seen.add(w))}
-async function loadWords(){try{let r=await fetch('data/allowed_words.json?v='+VERSION,{cache:'no-store'});if(!r.ok)throw Error();WORDS=clean(await r.json());if(WORDS.length<100)throw Error()}catch(e){WORDS=clean(FALLBACK)}SETWORDS=new Set(WORDS);document.getElementById('status').textContent='Kelime Ağı';buildKeyboard();newPuzzle()}
+async function loadWords(){try{let r=await fetch('data/allowed_words.json?v='+VERSION,{cache:'no-store'});if(!r.ok)throw Error();WORDS=clean(await r.json());if(WORDS.length<100)throw Error()}catch(e){WORDS=clean(FALLBACK)}SETWORDS=new Set(WORDS);document.getElementById('status').textContent='Türkçe Kelime Ağı';buildKeyboard();newPuzzle()}
 function setMode(m){mode=m;attempts=[];guess='';document.getElementById('modePuzzle').classList.toggle('active',m==='puzzle');document.getElementById('modeGuess').classList.toggle('active',m==='guess');document.getElementById('modeHelp').textContent=m==='puzzle'?'Önce yeşil kelime dizisini seç, sonra kelimeyi yaz. Doğruysa ağda açılır.':'Önce yeşil kelime dizisini seç. Renkler sadece seçili kelimeye göre hesaplanır.';render()}
-function cfg(){let d=document.getElementById('difficulty').value;if(d==='easy')return{min:3,max:5,count:5,size:9};if(d==='medium')return{min:4,max:6,count:7,size:11};if(d==='hard')return{min:5,max:8,count:9,size:13};return{min:6,max:12,count:12,size:15}}
+function cfg(){let d=document.getElementById('difficulty').value;if(d==='easy')return{min:5,max:5,count:5,size:9};if(d==='medium')return{min:5,max:5,count:7,size:11};if(d==='hard')return{min:5,max:5,count:9,size:11};return{min:5,max:5,count:11,size:13}}
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function newPuzzle(){if(!WORDS.length)return;let c=cfg();for(let i=0;i<400;i++){let p=generate(c);if(p&&p.placed.length>=c.count){puzzle=p;found=new Set();guess='';attempts=[];selected=null;render();toast('Yeni bulmaca hazır');return}}toast('Bulmaca üretilemedi, tekrar dene.')}
 function generate(c){const size=c.size,g=Array.from({length:size},()=>Array(size).fill(''));const pool=shuffle(WORDS.filter(w=>[...w].length>=c.min&&[...w].length<=c.max)).slice(0,650);if(!pool.length)return null;const placed=[],first=pool.shift(),r=Math.floor(size/2),cc=Math.floor((size-[...first].length)/2);place(g,first,r,cc,'H');placed.push({id:0,word:first,r,c:cc,dir:'H'});let guard=0;while(placed.length<c.count&&guard++<2200){const word=pool[Math.floor(Math.random()*pool.length)];if(!word||placed.some(p=>p.word===word))continue;for(const o of shuffle(options(g,word,size))){const copy=g.map(x=>[...x]);if(canPlace(copy,word,o.r,o.c,o.dir)&&place(copy,word,o.r,o.c,o.dir)&&validate(copy)){for(let rr=0;rr<size;rr++)g[rr]=copy[rr];placed.push({id:placed.length,word,r:o.r,c:o.c,dir:o.dir});break}}}return{grid:g,placed,size}}
