@@ -6,10 +6,12 @@ const dataDir = path.join(root, 'data');
 
 const TURKISH_LETTERS = new Set('ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZ'.split(''));
 
-const EXTRA_ACCEPTED_WORDS = [
+const DEFAULT_EXTRA_ACCEPTED_WORDS = [
   'TARIM',
   'PEDAL',
-  'NEZİH'
+  'NEZİH',
+  'SABUN',
+  'TİNER'
 ];
 
 const HARD_REJECTED_WORDS = new Set([
@@ -121,11 +123,13 @@ function main() {
 
   const existingAnswers = readJsonArray(path.join(dataDir, 'answers.json'));
   const existingAllowed = readJsonArray(path.join(dataDir, 'allowed_words.json'));
+  const verifiedExtra = readJsonArray(path.join(dataDir, 'verified_extra_words.json'));
 
   const master = cleanWords([
     ...existingAllowed,
     ...existingAnswers,
-    ...EXTRA_ACCEPTED_WORDS
+    ...DEFAULT_EXTRA_ACCEPTED_WORDS,
+    ...verifiedExtra
   ]);
 
   const grouped = groupByLength(master);
@@ -149,6 +153,8 @@ function main() {
       TARIM: master.includes('TARIM'),
       PEDAL: master.includes('PEDAL'),
       NEZIH: master.includes('NEZİH'),
+      SABUN: master.includes('SABUN'),
+      TINER: master.includes('TİNER'),
       MMMMM: master.includes('MMMMM')
     }
   });
