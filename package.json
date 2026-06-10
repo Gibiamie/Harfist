@@ -5,7 +5,7 @@
   "description": "Harfist Turkish word games packaged with Capacitor for Android.",
   "scripts": {
     "build:dictionaries": "node scripts/build-dictionaries.js",
-    "build:web": "npm run build:dictionaries && node scripts/build-www-v2.js",
+    "build:web": "npm run build:dictionaries && node scripts/build-www-unified.js",
     "cap:sync": "npm run build:web && npx cap sync android",
     "android:add": "npm run build:web && npx cap add android",
     "android:open": "npm run build:web && npx cap sync android && npx cap open android"
