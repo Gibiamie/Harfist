@@ -1,0 +1,9 @@
+{
+  "appId": "com.gibiamie.harfist",
+  "appName": "Harfist",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  }
+}
