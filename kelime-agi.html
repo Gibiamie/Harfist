@@ -22,10 +22,9 @@ h1{margin:0;font-size:24px}
 .row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 select{border:1px solid #ffffff22;border-radius:14px;background:#0f2033;color:#fff;padding:11px;font-weight:800;max-width:100%}
 .game{display:block}
-.gridPanel{display:flex;justify-content:center;align-items:center;min-height:300px}
+.gridPanel{display:flex;justify-content:center;align-items:center;min-height:280px}
 .grid{display:grid;gap:3px}
-.cell{border-radius:7px;display:grid;place-items:center;font-weight:1000}
-.cellSize{width:min(8.8vw,36px);height:min(8.8vw,36px);font-size:min(5.2vw,20px)}
+.cell{border-radius:7px;display:grid;place-items:center;font-weight:1000;aspect-ratio:1}
 .empty{background:transparent}
 .tile{background:#2dac58;color:transparent;border:1px solid #bff3cd;box-shadow:0 4px 12px #0004;cursor:pointer}
 .tile:hover{filter:brightness(1.15)}
@@ -35,9 +34,9 @@ select{border:1px solid #ffffff22;border-radius:14px;background:#0f2033;color:#f
 .guessLine{display:flex;gap:8px}
 .guessBox{flex:1;min-height:48px;border:1px solid #ffffff22;border-radius:14px;background:#0f2033;display:flex;align-items:center;padding:0 12px;font-size:22px;font-weight:1000;letter-spacing:2px}
 .mainBtn{border:0;border-radius:14px;padding:0 16px;font-weight:1000;background:linear-gradient(135deg,#38bdf8,#35a853);color:#06120a;cursor:pointer;min-height:48px}
-.keys{display:flex;flex-direction:column;gap:7px;margin-top:10px}
-.kr{display:flex;justify-content:center;gap:5px}
-.key{height:40px;min-width:28px;border:0;border-radius:10px;background:#334259;color:#fff;font-weight:1000;cursor:pointer}
+.keys{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.kr{display:flex;justify-content:center;gap:3px}
+.key{height:40px;min-width:0;flex:1;max-width:38px;border:0;border-radius:10px;background:#334259;color:#fff;font-weight:1000;font-size:clamp(11px,3.2vw,15px);cursor:pointer}
 .key.action{min-width:66px;background:#e7edf5;color:#111}
 .key.green{background:#35a853!important}
 .key.yellow{background:#d7a72f!important}
@@ -67,7 +66,6 @@ select{border:1px solid #ffffff22;border-radius:14px;background:#0f2033;color:#f
   .topArea{max-width:860px;margin:0 auto 6px}
   .game{display:grid;grid-template-columns:minmax(520px,650px) 390px;gap:14px;align-items:start;justify-content:center}
   .gridPanel{min-height:430px;max-height:calc(100vh - 160px);overflow:hidden;padding:10px;border:1px solid #ffffff10;border-radius:24px;background:#ffffff06}
-  .cellSize{width:34px;height:34px;font-size:19px}
   .grid{gap:4px}
   .key{height:34px;min-width:27px;font-size:13px}
   .key.action{min-width:66px}
@@ -373,17 +371,28 @@ function inWord(r,c,p){return wordCells(p).some(([rr,cc])=>r===rr&&c===cc);}
 function revealed(r,c){return puzzle.placed.some(p=>found.has(p.word)&&inWord(r,c,p));}
 
 // ── Render ───────────────────────────────────────────────────────────────────
+function calcCellPx(size){
+  const panel=document.querySelector('.gridPanel');
+  const maxW=panel ? Math.min(panel.clientWidth-8, 500) : 300;
+  const gap=3;
+  const px=Math.floor((maxW-(size-1)*gap)/size);
+  return Math.max(22, Math.min(px, 38));
+}
+
 function render(){
   if(!puzzle)return;
   const g=document.getElementById('grid');
   g.innerHTML='';
-  g.style.gridTemplateColumns='repeat('+puzzle.size+',1fr)';
-  g.style.gridTemplateRows='repeat('+puzzle.size+',1fr)';
+  const cellPx=calcCellPx(puzzle.size);
+  const fontSize=Math.max(11, Math.min(Math.floor(cellPx*0.58), 20));
+  g.style.gridTemplateColumns='repeat('+puzzle.size+','+cellPx+'px)';
+  g.style.gridTemplateRows='repeat('+puzzle.size+','+cellPx+'px)';
   for(let r=0;r<puzzle.size;r++){
     for(let c=0;c<puzzle.size;c++){
       const d=document.createElement('div');
       const ch=puzzle.grid[r][c];
-      d.className='cell cellSize '+(ch?'tile':'empty');
+      d.className='cell '+(ch?'tile':'empty');
+      d.style.width=cellPx+'px';d.style.height=cellPx+'px';d.style.fontSize=fontSize+'px';
       if(ch){
         d.textContent=ch;
         d.addEventListener('click',()=>cellClicked(r,c));
