@@ -524,7 +524,7 @@ function hint(){
   const list=puzzle.placed.filter(p=>!found.has(p.word));
   if(!list.length)return;
   const p=selected&&!found.has(selected.word)?selected:list[Math.floor(Math.random()*list.length)];
-  selectWord(p);
+  if(!selected||selected.id!==p.id)selectWord(p);
   toast([...p.word].length+' harfli kelime: '+p.word[0]+' ile başlıyor');
 }
 
