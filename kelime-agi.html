@@ -151,7 +151,58 @@ async function loadDicts(){
   }catch(e){}
   document.getElementById('status').textContent='Türkçe Kelime Ağı';
   buildKeyboard();
-  newPuzzle();
+  if(!restoreState()) newPuzzle();
+}
+
+// ── State persistence ────────────────────────────────────────────────────────
+const STATE_KEY='harfist_kelimeagi_state';
+
+function saveState(){
+  if(!puzzle)return;
+  try{
+    localStorage.setItem(STATE_KEY, JSON.stringify({
+      difficulty: document.getElementById('difficulty').value,
+      puzzle: {grid:puzzle.grid, placed:puzzle.placed, size:puzzle.size},
+      found: [...found],
+      wordAttempts,
+      wordKeyStates,
+      selectedId: selected ? selected.id : null,
+      guess,
+    }));
+  }catch(e){}
+}
+
+function restoreState(){
+  try{
+    const raw=localStorage.getItem(STATE_KEY);
+    if(!raw)return false;
+    const s=JSON.parse(raw);
+    if(!s.puzzle||!s.puzzle.placed||!s.puzzle.grid)return false;
+
+    // Restore difficulty selector
+    const sel=document.getElementById('difficulty');
+    if(s.difficulty)sel.value=s.difficulty;
+
+    puzzle=s.puzzle;
+    found=new Set(s.found||[]);
+    wordAttempts=s.wordAttempts||{};
+    wordKeyStates=s.wordKeyStates||{};
+    guess=s.guess||'';
+    attempts=[];
+    selected=null;
+
+    if(s.selectedId!=null){
+      const p=puzzle.placed.find(p=>p.id===s.selectedId);
+      if(p&&!found.has(p.word)){
+        selected=p;
+        attempts=wordAttempts[p.id]||[];
+      }
+    }
+    resetKeyboard();
+    if(selected&&wordKeyStates[selected.id])restoreKeyState(wordKeyStates[selected.id]);
+    render();
+    return true;
+  }catch(e){return false;}
 }
 
 // ── Puzzle generator ────────────────────────────────────────────────────────
@@ -180,7 +231,7 @@ function newPuzzle(){
     if(p&&p.placed.length>=c.minWords){
       puzzle=p;found=new Set();guess='';attempts=[];selected=null;
       wordAttempts={};wordKeyStates={};
-      resetKeyboard();render();
+      resetKeyboard();render();saveState();
       toast('Yeni bulmaca hazır');
       return;
     }
@@ -464,7 +515,7 @@ function selectWord(p){
   attempts=wordAttempts[p.id]||[];
   resetKeyboard();
   if(wordKeyStates[p.id]) restoreKeyState(wordKeyStates[p.id]);
-  render();
+  render();saveState();
   toast([...p.word].length+' harfli kelime seçildi');
 }
 
@@ -526,12 +577,15 @@ function submitGuess(){
 
   if(v===selected.word){
     found.add(selected.word);
-    selected=null;attempts=[];resetKeyboard();render();
+    wordAttempts[selected.id]=[];wordKeyStates[selected.id]={};
+    selected=null;attempts=[];resetKeyboard();render();saveState();
     if(found.size===puzzle.placed.length)toast('Tebrikler! Tüm kelimeler bulundu!');
     else toast('Kelime bulundu!');
     return;
   }
-  render();
+  wordAttempts[selected.id]=attempts;
+  wordKeyStates[selected.id]=saveKeyState();
+  render();saveState();
   toast('Yanlış kelime, tekrar dene');
 }
 
