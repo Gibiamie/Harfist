@@ -11,70 +11,104 @@ body{background:#07111e;color:#f8fbff;font-family:system-ui,-apple-system,Segoe 
 .shell{min-height:100dvh;background:radial-gradient(circle at top,#17304e 0,#08111d 62%);display:flex;justify-content:center}
 .app{width:100%;max-width:540px;padding:12px}
 .top{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.brand{display:flex;align-items:center;gap:10px}.logo{width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,#42d66f,#7dd3fc);display:grid;place-items:center;color:#06120a;font-weight:1000}
-h1{margin:0;font-size:24px}.sub{font-size:12px;color:#9eadbe}
-.btn,.tab{border:1px solid #ffffff22;border-radius:14px;background:#ffffff12;color:#fff;font-weight:900;padding:10px 12px}
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.tab.active{background:#7dd3fc;color:#06120a}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,#42d66f,#7dd3fc);display:grid;place-items:center;color:#06120a;font-weight:1000}
+h1{margin:0;font-size:24px}
+.sub{font-size:12px;color:#9eadbe}
+.btn{border:1px solid #ffffff22;border-radius:14px;background:#ffffff12;color:#fff;font-weight:900;padding:10px 12px;cursor:pointer}
+.navrow{display:flex;gap:8px;margin:8px 0;flex-wrap:wrap}
+.navbtn{border:1px solid #ffffff22;border-radius:12px;background:#ffffff12;color:#fff;font-weight:700;padding:7px 11px;font-size:13px;text-decoration:none;display:inline-block}
 .panel{border:1px solid #ffffff22;background:#ffffff10;border-radius:18px;padding:12px;margin:10px 0}
 .row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 select{border:1px solid #ffffff22;border-radius:14px;background:#0f2033;color:#fff;padding:11px;font-weight:800;max-width:100%}
-.help{font-size:12px;color:#a9b8ca;line-height:1.35;margin:8px 0 0}
-.game{display:block}.gridPanel{display:flex;justify-content:center;align-items:center;min-height:330px}
-.grid{display:grid;gap:4px}.cell{width:min(8.4vw,34px);height:min(8.4vw,34px);border-radius:8px;display:grid;place-items:center;font-weight:1000;font-size:min(5vw,20px)}
-.empty{background:transparent}.tile{background:#2dac58;color:transparent;border:1px solid #bff3cd;box-shadow:0 6px 16px #0005;cursor:pointer}.tile:hover{filter:brightness(1.15)}
-.tile.reveal{color:#06120a}.tile.selected{outline:3px solid #7dd3fc;box-shadow:0 0 18px #38bdf8;animation:pulse 1.1s infinite alternate}
+.game{display:block}
+.gridPanel{display:flex;justify-content:center;align-items:center;min-height:300px}
+.grid{display:grid;gap:3px}
+.cell{border-radius:7px;display:grid;place-items:center;font-weight:1000}
+.cellSize{width:min(8.8vw,36px);height:min(8.8vw,36px);font-size:min(5.2vw,20px)}
+.empty{background:transparent}
+.tile{background:#2dac58;color:transparent;border:1px solid #bff3cd;box-shadow:0 4px 12px #0004;cursor:pointer}
+.tile:hover{filter:brightness(1.15)}
+.tile.reveal{color:#06120a}
+.tile.selected{outline:3px solid #7dd3fc;box-shadow:0 0 16px #38bdf8;animation:pulse 1.1s infinite alternate}
 @keyframes pulse{from{filter:brightness(1)}to{filter:brightness(1.18)}}
-.guessLine{display:flex;gap:8px}.guessBox{flex:1;min-height:48px;border:1px solid #ffffff22;border-radius:14px;background:#0f2033;display:flex;align-items:center;padding:0 12px;font-size:22px;font-weight:1000;letter-spacing:2px}
-.mainBtn{border:0;border-radius:14px;padding:0 16px;font-weight:1000;background:linear-gradient(135deg,#38bdf8,#35a853);color:#06120a}
-.keys{display:flex;flex-direction:column;gap:7px;margin-top:10px}.kr{display:flex;justify-content:center;gap:5px}.key{height:40px;min-width:28px;border:0;border-radius:10px;background:#334259;color:#fff;font-weight:1000}
-.key.action{min-width:66px;background:#e7edf5;color:#111}.key.green{background:#35a853!important}.key.yellow{background:#d7a72f!important}.key.gray{background:#ef6f6c!important;color:#fff!important}
-.wordsHead{display:flex;justify-content:space-between;align-items:center;cursor:pointer}.words{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:10px}.words.collapsed{display:none}
-.word{border:1px solid #ffffff22;border-radius:12px;background:#ffffff10;padding:9px;text-align:center;font-weight:900;color:#b7c6d8;cursor:pointer}.word.active{outline:2px solid #7dd3fc;color:#fff}.word.ok{background:#7dd3fc;color:#06120a}
-.blanks{letter-spacing:3px}.tryRow{display:grid;gap:6px;margin:7px 0}.tryCell{height:40px;border-radius:10px;background:#ffffff12;display:grid;place-items:center;font-weight:1000}.green{background:#35a853!important}.yellow{background:#d7a72f!important}.gray{background:#465163!important}
-.toast{position:fixed;top:72px;left:50%;transform:translateX(-50%);background:#fff;color:#111827;padding:11px 17px;border-radius:14px;font-weight:900;opacity:0;transition:.2s;max-width:92%;text-align:center;z-index:9}.toast.show{opacity:1}
-@media(min-width:760px){.app{max-width:760px}.cell{width:38px;height:38px;font-size:22px}.gridPanel{min-height:390px}}
-@media(min-width:1024px){
- .shell{align-items:flex-start}.app{width:96vw;max-width:1180px;padding:10px}
- .topArea{max-width:860px;margin:0 auto 6px}
- .game{display:grid;grid-template-columns:minmax(520px,650px) 390px;gap:14px;align-items:start;justify-content:center}
- .settingsPanel{padding:8px}.inputPanel,.wordsPanel{padding:10px}
- .gridPanel{min-height:430px;max-height:calc(100vh - 150px);overflow:hidden;padding:10px;border:1px solid #ffffff10;border-radius:24px;background:#ffffff06}
- .cell{width:34px;height:34px;border-radius:8px;font-size:20px}.grid{gap:5px}
- .key{height:34px;min-width:27px;font-size:13px}.key.action{min-width:66px}
- .guessBox{min-height:42px;font-size:22px}.word{padding:7px}.words{max-height:210px;overflow:auto}.help{display:none}
+.guessLine{display:flex;gap:8px}
+.guessBox{flex:1;min-height:48px;border:1px solid #ffffff22;border-radius:14px;background:#0f2033;display:flex;align-items:center;padding:0 12px;font-size:22px;font-weight:1000;letter-spacing:2px}
+.mainBtn{border:0;border-radius:14px;padding:0 16px;font-weight:1000;background:linear-gradient(135deg,#38bdf8,#35a853);color:#06120a;cursor:pointer;min-height:48px}
+.keys{display:flex;flex-direction:column;gap:7px;margin-top:10px}
+.kr{display:flex;justify-content:center;gap:5px}
+.key{height:40px;min-width:28px;border:0;border-radius:10px;background:#334259;color:#fff;font-weight:1000;cursor:pointer}
+.key.action{min-width:66px;background:#e7edf5;color:#111}
+.key.green{background:#35a853!important}
+.key.yellow{background:#d7a72f!important}
+.key.gray{background:#465163!important;color:#9aa8b4!important}
+.wordsHead{display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.words{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.words.collapsed{display:none}
+.wordcard{border:1px solid #ffffff22;border-radius:12px;background:#ffffff10;padding:8px 10px;text-align:center;font-weight:900;color:#b7c6d8;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
+.wordcard.active{outline:2px solid #7dd3fc;color:#fff}
+.wordcard.ok{background:#7dd3fc;color:#06120a}
+.wordcard .wboxes{display:flex;gap:3px}
+.wbox{width:18px;height:18px;border:1px solid currentColor;border-radius:4px;display:inline-block;opacity:.6}
+.wordcard.ok .wbox{background:#06120a;border-color:#06120a;opacity:1}
+.tryRow{display:grid;gap:5px;margin:6px 0}
+.tryCell{height:38px;border-radius:9px;background:#ffffff12;display:grid;place-items:center;font-weight:1000}
+.green{background:#35a853!important}.yellow{background:#d7a72f!important}.gray{background:#465163!important}
+.toast{position:fixed;top:72px;left:50%;transform:translateX(-50%);background:#fff;color:#111827;padding:11px 17px;border-radius:14px;font-weight:900;opacity:0;transition:.2s;max-width:92%;text-align:center;z-index:9;pointer-events:none}
+.toast.show{opacity:1}
+@media(min-width:760px){
+  .app{max-width:760px}
+  .cellSize{width:38px;height:38px;font-size:22px}
+  .gridPanel{min-height:360px}
 }
-@media(min-width:1500px){.app{max-width:1250px}.game{grid-template-columns:minmax(620px,720px) 410px}.cell{width:39px;height:39px;font-size:23px}.gridPanel{min-height:500px}}
+@media(min-width:1024px){
+  .shell{align-items:flex-start}
+  .app{width:96vw;max-width:1180px;padding:10px}
+  .topArea{max-width:860px;margin:0 auto 6px}
+  .game{display:grid;grid-template-columns:minmax(520px,650px) 390px;gap:14px;align-items:start;justify-content:center}
+  .gridPanel{min-height:430px;max-height:calc(100vh - 160px);overflow:hidden;padding:10px;border:1px solid #ffffff10;border-radius:24px;background:#ffffff06}
+  .cellSize{width:34px;height:34px;font-size:19px}
+  .grid{gap:4px}
+  .key{height:34px;min-width:27px;font-size:13px}
+  .key.action{min-width:66px}
+  .words{max-height:220px;overflow:auto}
+}
 </style>
 </head>
 <body>
 <div class="shell"><div class="app">
   <div class="topArea">
     <div class="top">
-      <div class="brand"><div class="logo">H</div><div><h1>Kelime Ağı</h1><div id="status" class="sub">Türkçe Kelime Ağı</div></div></div>
-      <button class="btn" onclick="newPuzzle()">↻</button>
+      <div class="brand"><div class="logo">H</div><div><h1>Kelime Ağı</h1><div id="status" class="sub">Yükleniyor…</div></div></div>
+      <button class="btn" onclick="newPuzzle()">↻ Yeni</button>
     </div>
-    <div class="tabs"><button id="modePuzzle" class="tab active" onclick="setMode('puzzle')">Bulmaca Modu</button><button id="modeGuess" class="tab" onclick="setMode('guess')">Renkli Tahmin</button></div>
+    <div class="navrow">
+      <a class="navbtn" href="index.html">← Klasik</a>
+      <a class="navbtn" href="progress.html">📊 İlerleme</a>
+    </div>
   </div>
   <div class="game">
     <div class="leftDesktop">
-      <div class="panel settingsPanel">
-        <div class="row"><select id="difficulty" onchange="newPuzzle()">
-          <option value="easy">Kolay • 5 harf • 5 kelime</option>
-          <option value="medium" selected>Orta • 5 harf • 7 kelime</option>
-          <option value="hard">Zor • 5 harf • 9 kelime</option>
-          <option value="expert">Uzman • 5 harf • 11 kelime</option>
-        </select><button class="btn" onclick="hint()">İpucu</button></div>
-        <p class="help" id="modeHelp">Önce yeşil kelime dizisini seç, sonra kelimeyi yaz. Doğruysa ağda açılır.</p>
+      <div class="panel">
+        <div class="row">
+          <select id="difficulty" onchange="newPuzzle()">
+            <option value="easy">Kolay — 4–5 kelime</option>
+            <option value="medium" selected>Orta — 6–8 kelime</option>
+            <option value="hard">Zor — 8–11 kelime</option>
+          </select>
+          <button class="btn" onclick="hint()">İpucu</button>
+        </div>
       </div>
       <main class="gridPanel"><div id="grid" class="grid"></div></main>
     </div>
     <div class="rightDesktop">
-      <div class="panel inputPanel">
+      <div class="panel">
         <div class="row"><b id="activeLabel">Önce kelime dizisi seç</b><span id="progress">0/0</span></div>
         <div class="guessLine"><div id="guessBox" class="guessBox"></div><button class="mainBtn" onclick="submitGuess()">DENE</button></div>
-        <div id="attempts"></div><div id="keys" class="keys"></div>
+        <div id="attempts"></div>
+        <div id="keys" class="keys"></div>
       </div>
-      <div class="panel wordsPanel">
+      <div class="panel">
         <div class="wordsHead" onclick="toggleWords()"><b>Bulunacak kelimeler</b><span id="toggle">▼</span></div>
         <div id="words" class="words"></div>
       </div>
@@ -83,125 +117,427 @@ select{border:1px solid #ffffff22;border-radius:14px;background:#0f2033;color:#f
 </div></div>
 <div id="toast" class="toast"></div>
 <script>
-const VERSION='network_rules_v3_dual_dictionary';
-const TR=['E','R','T','Y','U','I','O','P','Ğ','Ü','A','S','D','F','G','H','J','K','L','Ş','İ','Z','C','V','B','N','M','Ö','Ç'], SET=new Set(TR);
-const GUARANTEE='ACEMİ ARİFE ARİZA KİTAP KALEM DENİZ GÜNEŞ ÇİÇEK ŞEKER KÖPEK BULUT DÜNYA SABAH AKŞAM İNCİR BİBER PİLAV KİRAZ ÇİLEK GÜZEL SİMİT BİLGİ KAPAK KÜREK TABAK ÇANTA KEMER DOLAP RADYO FIRIN YAZAR KÖPRÜ SICAK SOĞUK KÜÇÜK BÜYÜK TEMİZ SAKİN TARİH TAKİP YAKIN ZAMAN YEMEK RESİM KURAL MUTLU HUZUR SEVGİ NEHİR YÜREK BEYAZ SİYAH YEŞİL ALTIN KUZEY GÜNEY ÇINAR ARMUT KAVUN LİMON BALIK SINIF MASAL MÜZİK SANAT PAZAR SAHİL MERAK CESUR GÜVEN BARIŞ ÇORBA EKMEK KAHVE KAŞIK ÇATAL TABLO PERDE LAMBA KİLİM BAKIR DEMİR ÇAMUR DİLEK NİYET HAYAL DOĞRU TATLI TUZLU GÖLGE ÇÖZÜM SAKAL ERZAK POTUK BUNAK CAHİL ÖDÜNÇ'.split(' ');
-const BAD=new Set(['REYRİ','BANİK','BBBBB','GGGGG','MMMMM','KKKKK','OOOOO','AAAAA','CCCCC','MANTU','RENKL','ÇİFTÇ','KÖTÜL','YAPRA','YÜKSE','TAKİM','ADINA','ORASI','ORAYA','İTEĞİ','ANALI','TAÇLI','YÜKLÜ','EVDEŞ','AÇMAK','ATMAK','UYMAK','UÇMAK','EŞMEK']);
-let WORDS=[],WORDSET=new Set(),VALIDSET=new Set(),puzzle=null,found=new Set(),guess='',mode='puzzle',attempts=[],selected=null;
+// ── Word pools ──────────────────────────────────────────────────────────────
+const TR_CHARS=['E','R','T','Y','U','I','O','P','Ğ','Ü','A','S','D','F','G','H','J','K','L','Ş','İ','Z','C','V','B','N','M','Ö','Ç'];
+const TR_SET=new Set(TR_CHARS);
+
 function up(t){return(t||'').toString().trim().normalize('NFC').toLocaleUpperCase('tr-TR').replaceAll('Â','A').replaceAll('Î','İ').replaceAll('Û','U')}
-function is5(w){w=up(w);return [...w].length===5&&[...w].every(ch=>SET.has(ch))}
-function clean(a){let seen=new Set();return(Array.isArray(a)?a:[]).map(up).filter(w=>is5(w)&&!BAD.has(w)&&!seen.has(w)&&seen.add(w))}
-async function loadWords(){
-  let answersRaw=[], allowedRaw=[];
+function isValid(w,len){w=up(w);return [...w].length===len&&[...w].every(c=>TR_SET.has(c))}
+
+const FB3=['ANA','ARA','ARI','BAL','BAŞ','BAT','BEL','BEN','BOL','BOŞ','BUZ','CAN','ÇAY','DAL','DAM','DAR','DEV','DIŞ','DİL','DOL','DÜZ','GEL','GEZ','GÖL','GÜL','GÜN','HAK','HAL','HAS','HOŞ','İŞ','KAL','KAN','KAR','KAT','KAZ','KES','KIŞ','KOL','KÖK','KÖR','KUŞ','LAF','NAR','ODA','ÖNE','ÖZE','SAĞ','SAT','SAZ','SEL','SEN','SOR','SÖZ','TAK','TAM','TAŞ','TEK','TER','TOZ','TUZ','VAR','VUR','YAN','YAP','YAR','YAT','YAZ','YER','YOK','YOL','ZOR'];
+const FB4=['ADIM','AKIL','ALAN','ALIM','ALTI','AMAN','ARPA','ASIL','AVLU','AYAK','AYNI','BACA','BANT','BELA','BORU','BOYA','CAMI','DAMA','DERE','DEVE','DÖRT','ELLI','ESAS','FARE','FARK','GERİ','GECE','GEMİ','GIDA','HACI','HANE','HATA','HAVA','HECE','HILE','HOCA','ILIK','IRAK','İKİZ','İLAÇ','İNAT','KALE','KAMA','KARA','KAYA','KAZA','KİRA','KOLA','KOVA','KÜPE','LALE','MEME','META','MİDE','MOLA','NANE','NOTA','OCAK','ODUN','ORTA','ÖDEV','ÖFKE','PALA','PARA','PARK','RÜYA','SAAT','SADE','SAHA','SORU','TANE','TAVA','TAZE','TEMA','TOKA','UÇAK','UZAK','VADE','VANA','VAZO','YARA','YELE','YURT','YÜCE','ZARF'];
+const FB5=['ACEMİ','ARİFE','KİTAP','KALEM','DENİZ','GÜNEŞ','ÇİÇEK','ŞEKER','KÖPEK','BULUT','DÜNYA','SABAH','AKŞAM','İNCİR','BİBER','PİLAV','KİRAZ','ÇİLEK','GÜZEL','SİMİT','BİLGİ','KAPAK','KÜREK','TABAK','ÇANTA','KEMER','DOLAP','RADYO','FIRIN','YAZAR','KÖPRÜ','SICAK','SOĞUK','KÜÇÜK','BÜYÜK','TEMİZ','SAKİN','TARİH','TAKİP','YAKIN','ZAMAN','YEMEK','RESİM','KURAL','MUTLU','HUZUR','SEVGİ','NEHİR','YÜREK','BEYAZ','SİYAH','YEŞİL','ALTIN','KUZEY','GÜNEY','ÇINAR','ARMUT','KAVUN','LİMON','BALIK','SINIF','MASAL','MÜZİK','SANAT','PAZAR','SAHİL','MERAK','CESUR','GÜVEN','BARIŞ','ÇORBA','EKMEK','KAHVE','KAŞIK','ÇATAL','TABLO','PERDE','LAMBA','KİLİM','BAKIR','DEMİR','ÇAMUR','DİLEK','NİYET','HAYAL','DOĞRU','TATLI','TUZLU','GÖLGE','ÇÖZÜM','SAKAL','ERZAK','POTUK','BUNAK','BOYUN','SABUN','TARIM','PEDAL','NEZİH','TİNER'];
+
+// Filter fallback lists by exact length to avoid 2-letter stragglers
+let pool3=new Set(FB3.filter(w=>[...w].length===3));
+let pool4=new Set(FB4.filter(w=>[...w].length===4));
+let pool5=new Set(FB5.filter(w=>[...w].length===5));
+let allWords=new Set([...pool3,...pool4,...pool5]);
+
+async function loadDicts(){
   try{
-    let r=await fetch('data/answers.json?v='+VERSION,{cache:'no-store'});
-    if(r.ok)answersRaw=await r.json();
+    const r=await fetch('data/master_dictionary.json');
+    if(r.ok){
+      const data=await r.json();
+      const arr=Array.isArray(data)?data:(data.words||[]);
+      arr.forEach(w=>{
+        w=up(w);
+        const chars=[...w];
+        const len=chars.length;
+        if(!chars.every(c=>TR_SET.has(c)))return;
+        if(len===3){pool3.add(w);allWords.add(w);}
+        else if(len===4){pool4.add(w);allWords.add(w);}
+        else if(len===5){pool5.add(w);allWords.add(w);}
+      });
+    }
   }catch(e){}
-
-  try{
-    let r=await fetch('data/allowed_words.json?v='+VERSION,{cache:'no-store'});
-    if(r.ok)allowedRaw=await r.json();
-  }catch(e){}
-
-  // Puzzle answers: only Harfist clean answer pool.
-  WORDS=clean(answersRaw);
-  if(WORDS.length<80)WORDS=clean(GUARANTEE);
-
-  // Accepted guesses: wider approved dictionary, still 5-letter Turkish only.
-  let validWords=clean([...allowedRaw, ...answersRaw, ...GUARANTEE]);
-
-  ['PEDAL','NEZİH','CAHİL','ÖDÜNÇ','ERZAK','SAKAL','POTUK','BUNAK','ÇÖZÜM','ACEMİ']
-    .forEach(w=>{
-      w=up(w);
-      if(is5(w) && !BAD.has(w) && !validWords.includes(w)) validWords.push(w);
-    });
-
-  WORDSET=new Set(WORDS);
-  VALIDSET=new Set(validWords);
-
-  console.log('Kelime Ağı dictionaries', {
-    answers: WORDSET.size,
-    valid: VALIDSET.size,
-    PEDAL: VALIDSET.has('PEDAL'),
-    NEZIH: VALIDSET.has('NEZİH'),
-    MMMMM: VALIDSET.has('MMMMM')
-  });
-
   document.getElementById('status').textContent='Türkçe Kelime Ağı';
   buildKeyboard();
   newPuzzle();
 }
-function setMode(m){mode=m;attempts=[];guess='';resetKeyboard();document.getElementById('modePuzzle').classList.toggle('active',m==='puzzle');document.getElementById('modeGuess').classList.toggle('active',m==='guess');document.getElementById('modeHelp').textContent=m==='puzzle'?'Önce yeşil kelime dizisini seç, sonra kelimeyi yaz. Doğruysa ağda açılır.':'Önce yeşil kelime dizisini seç. Renkler sadece seçili kelimeye göre hesaplanır.';render()}
-function cfg(){let d=document.getElementById('difficulty').value;if(d==='easy')return{count:5,size:9};if(d==='medium')return{count:7,size:11};if(d==='hard')return{count:9,size:11};return{count:11,size:13}}
-function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function newPuzzle(){if(!WORDS.length)return;let c=cfg();for(let i=0;i<500;i++){let p=generate(c);if(p&&p.placed.length>=c.count){puzzle=p;found=new Set();guess='';attempts=[];selected=null;resetKeyboard();render();toast('Yeni bulmaca hazır');return}}toast('Bulmaca üretilemedi, tekrar dene.')}
-function generate(c){const size=c.size,g=Array.from({length:size},()=>Array(size).fill(''));const pool=shuffle(WORDS).slice(0,750);const placed=[],first=pool.shift(),r=Math.floor(size/2),cc=Math.floor((size-5)/2);place(g,first,r,cc,'H');placed.push({id:0,word:first,r,c:cc,dir:'H'});let guard=0;while(placed.length<c.count&&guard++<2600){const word=pool[Math.floor(Math.random()*pool.length)];if(!word||placed.some(p=>p.word===word))continue;for(const o of shuffle(options(g,word,size))){const copy=g.map(x=>[...x]);if(canPlace(copy,word,o.r,o.c,o.dir)&&place(copy,word,o.r,o.c,o.dir)&&validate(copy)){for(let rr=0;rr<size;rr++)g[rr]=copy[rr];placed.push({id:placed.length,word,r:o.r,c:o.c,dir:o.dir});break}}}return{grid:g,placed,size}}
-function options(g,w,size){const out=[],chars=[...w];for(let r=0;r<size;r++)for(let c=0;c<size;c++)if(g[r][c])chars.forEach((ch,i)=>{if(ch===g[r][c]){out.push({r,c:c-i,dir:'H'});out.push({r:r-i,c,dir:'V'})}});return out}
-function inside(g,r,c){return r>=0&&c>=0&&r<g.length&&c<g.length}
-function canPlace(g,w,r,c,dir){let ch=[...w],cross=0;for(let i=0;i<5;i++){let rr=r+(dir==='V'?i:0),cc=c+(dir==='H'?i:0);if(!inside(g,rr,cc))return false;if(g[rr][cc]&&g[rr][cc]!==ch[i])return false;if(g[rr][cc]===ch[i])cross++}let br=r-(dir==='V'?1:0),bc=c-(dir==='H'?1:0),ar=r+(dir==='V'?5:0),ac=c+(dir==='H'?5:0);if(inside(g,br,bc)&&g[br][bc])return false;if(inside(g,ar,ac)&&g[ar][ac])return false;return cross>0}
-function place(g,w,r,c,dir){[...w].forEach((ch,i)=>g[r+(dir==='V'?i:0)][c+(dir==='H'?i:0)]=ch);return true}
-function segments(g){let out=[],n=g.length;for(let r=0;r<n;r++){let s='';for(let c=0;c<=n;c++){if(c<n&&g[r][c])s+=g[r][c];else{if(s.length>1)out.push(s);s=''}}}for(let c=0;c<n;c++){let s='';for(let r=0;r<=n;r++){if(r<n&&g[r][c])s+=g[r][c];else{if(s.length>1)out.push(s);s=''}}}return out}
-function validate(g){return segments(g).every(s=>s.length===5&&WORDSET.has(s))}
-function selectWord(p){if(!p||found.has(p.word))return;selected=p;guess='';attempts=[];resetKeyboard();render();toast('5 harfli kelime seçildi')}
-function cellClicked(r,c){const list=puzzle.placed.filter(p=>!found.has(p.word)&&inWord(r,c,p));if(list.length)selectWord(list[0])}
-function render(){if(!puzzle)return;let g=document.getElementById('grid');g.innerHTML='';g.style.gridTemplateColumns=`repeat(${puzzle.size},1fr)`;for(let r=0;r<puzzle.size;r++)for(let c=0;c<puzzle.size;c++){let d=document.createElement('div'),ch=puzzle.grid[r][c];d.className='cell '+(ch?'tile':'empty');if(ch){d.textContent=ch;d.onclick=()=>cellClicked(r,c);if(revealed(r,c))d.classList.add('reveal');if(selected&&inWord(r,c,selected))d.classList.add('selected')}g.appendChild(d)}document.getElementById('guessBox').textContent=guess;document.getElementById('progress').textContent=`${found.size}/${puzzle.placed.length}`;document.getElementById('activeLabel').textContent=selected?'Seçili: 5 harfli kelime':'Önce kelime dizisi seç';renderWords();renderAttempts()}
-function renderWords(){let w=document.getElementById('words');w.innerHTML='';puzzle.placed.forEach(p=>{let d=document.createElement('div');d.className='word '+(found.has(p.word)?'ok':'')+(selected&&selected.id===p.id?' active':'');d.innerHTML=found.has(p.word)?'✓ '+p.word:'<span class="blanks">□□□□□</span>';d.onclick=e=>{e.stopPropagation();selectWord(p)};w.appendChild(d)})}
-function renderAttempts(){let a=document.getElementById('attempts');a.innerHTML='';if(mode!=='guess')return;attempts.slice(-5).forEach(x=>{let row=document.createElement('div');row.className='tryRow';row.style.gridTemplateColumns='repeat(5,1fr)';[...x.word].forEach((ch,i)=>{let c=document.createElement('div');c.className='tryCell '+x.colors[i];c.textContent=ch;row.appendChild(c)});a.appendChild(row)})}
-function revealed(r,c){return puzzle.placed.some(p=>found.has(p.word)&&inWord(r,c,p))}
-function inWord(r,c,p){for(let i=0;i<5;i++)if(r===p.r+(p.dir==='V'?i:0)&&c===p.c+(p.dir==='H'?i:0))return true;return false}
-function buildKeyboard(){let k=document.getElementById('keys');k.innerHTML='';[['E','R','T','Y','U','I','O','P','Ğ','Ü'],['A','S','D','F','G','H','J','K','L','Ş','İ'],['Z','C','V','B','N','M','Ö','Ç','SİL']].forEach(row=>{let r=document.createElement('div');r.className='kr';row.forEach(x=>{let b=document.createElement('button');b.className=x==='SİL'?'key action':'key';b.dataset.key=x;b.textContent=x;b.onclick=()=>x==='SİL'?del():add(x);r.appendChild(b)});k.appendChild(r)})}
-function resetKeyboard(){document.querySelectorAll('.key').forEach(k=>k.classList.remove('green','yellow','gray'))}
-function paintKey(ch,color){let k=document.querySelector(`.key[data-key="${ch}"]`);if(!k)return;let rank={gray:1,yellow:2,green:3},old=['green','yellow','gray'].find(c=>k.classList.contains(c));if(!old||rank[color]>rank[old]){k.classList.remove('green','yellow','gray');k.classList.add(color)}}
-function add(x){if(guess.length<5){guess+=x;render()}}function del(){guess=guess.slice(0,-1);render()}
+
+// ── Puzzle generator ────────────────────────────────────────────────────────
+let puzzle=null, found=new Set(), guess='', attempts=[], selected=null;
+
+function cfg(){
+  const d=document.getElementById('difficulty').value;
+  if(d==='easy')  return{minWords:4,maxWords:5, size:9, lens:[4,5,3,5,4]};
+  if(d==='medium')return{minWords:6,maxWords:8, size:11,lens:[5,4,3,5,4,3,5,4]};
+                  return{minWords:8,maxWords:11,size:13,lens:[5,3,4,5,3,5,4,3,5,4,5]};
+}
+
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function poolForLen(len){
+  if(len===3)return shuffle([...pool3]);
+  if(len===4)return shuffle([...pool4]);
+  return shuffle([...pool5]);
+}
+
+function newPuzzle(){
+  const c=cfg();
+  for(let attempt=0;attempt<200;attempt++){
+    const p=generate(c);
+    if(p&&p.placed.length>=c.minWords){
+      puzzle=p;found=new Set();guess='';attempts=[];selected=null;
+      resetKeyboard();render();
+      toast('Yeni bulmaca hazır');
+      return;
+    }
+  }
+  toast('Bulmaca üretilemedi, tekrar dene.');
+}
+
+function makeGrid(size){return Array.from({length:size},()=>Array(size).fill(''));}
+
+function generate(c){
+  const size=c.size;
+  const g=makeGrid(size);
+  const placed=[];
+  const lensToPlace=[...c.lens].slice(0,c.maxWords);
+
+  // Place first word near center
+  const firstLen=lensToPlace[0];
+  const firstPool=poolForLen(firstLen);
+  let placed_first=false;
+  for(const w of firstPool){
+    const r=Math.floor(size/2);
+    const col=Math.floor((size-firstLen)/2);
+    if(tryPlace(g,placed,w,r,col,'H')){placed_first=true;break;}
+  }
+  if(!placed_first)return null;
+
+  // Place remaining words
+  for(let i=1;i<lensToPlace.length;i++){
+    const len=lensToPlace[i];
+    const pool=poolForLen(len);
+    let wordPlaced=false;
+    for(const w of pool){
+      if(placed.some(p=>p.word===w))continue;
+      // Find crossing candidates
+      const candidates=[];
+      for(const p of placed){
+        const pChars=[...p.word];
+        const wChars=[...w];
+        for(let pi=0;pi<pChars.length;pi++){
+          for(let wi=0;wi<wChars.length;wi++){
+            if(pChars[pi]===wChars[wi]){
+              // Try crossing: p is H → new word is V at this cell
+              if(p.dir==='H'){
+                const nr=p.r-wi, nc=p.c+pi;
+                candidates.push({r:nr,c:nc,dir:'V'});
+              } else {
+                const nr=p.r+pi, nc=p.c-wi;
+                candidates.push({r:nr,c:nc,dir:'H'});
+              }
+            }
+          }
+        }
+      }
+      for(const cand of shuffle(candidates)){
+        const gCopy=g.map(row=>[...row]);
+        const placedCopy=placed.map(p=>({...p}));
+        if(tryPlace(gCopy,placedCopy,w,cand.r,cand.c,cand.dir)){
+          // Accept
+          for(let rr=0;rr<size;rr++)g[rr]=gCopy[rr];
+          placed.push(placedCopy[placedCopy.length-1]);
+          wordPlaced=true;
+          break;
+        }
+      }
+      if(wordPlaced)break;
+    }
+  }
+
+  if(placed.length<c.minWords)return null;
+  if(!isConnected(placed))return null;
+  return{grid:g,placed,size};
+}
+
+function tryPlace(g,placed,word,r,c,dir){
+  const size=g.length;
+  const chars=[...word];
+  const len=chars.length;
+  const dr=dir==='V'?1:0, dc=dir==='H'?1:0;
+
+  // Bounds check
+  const er=r+dr*(len-1), ec=c+dc*(len-1);
+  if(r<0||c<0||er>=size||ec>=size)return false;
+
+  // Cell before word in direction must be empty
+  const br=r-dr, bc=c-dc;
+  if(br>=0&&bc>=0&&br<size&&bc<size&&g[br][bc])return false;
+  // Cell after word in direction must be empty
+  const ar=r+dr*len, ac=c+dc*len;
+  if(ar>=0&&ac>=0&&ar<size&&ac<size&&g[ar][ac])return false;
+
+  // Reject if any existing same-direction word shares a cell
+  for(const p of placed){
+    if(p.dir===dir){
+      const pCells=wordCells(p);
+      for(let i=0;i<len;i++){
+        const rr=r+dr*i,cc=c+dc*i;
+        if(pCells.some(([r2,c2])=>r2===rr&&c2===cc))return false;
+      }
+    }
+  }
+
+  let crossCount=0;
+  for(let i=0;i<len;i++){
+    const rr=r+dr*i, cc=c+dc*i;
+    if(g[rr][cc]){
+      if(g[rr][cc]!==chars[i])return false; // letter mismatch
+      crossCount++;
+    }
+  }
+
+  // Must cross at least one existing cell (except first word)
+  if(placed.length>0&&crossCount===0)return false;
+
+  // Check no same-direction neighbor adjacency that creates fake runs
+  // For each cell of the new word, check perpendicular neighbors won't form
+  // a continuation of a parallel word
+  for(let i=0;i<len;i++){
+    const rr=r+dr*i, cc=c+dc*i;
+    if(!g[rr][cc]){
+      // This cell will be newly filled — check perpendicular neighbors
+      // won't create a same-direction run with another word
+      const pr=rr-dc, pc=cc-dr; // perpendicular-direction -1
+      const qr=rr+dc, qc=cc+dr; // perpendicular-direction +1
+      if(pr>=0&&pc>=0&&pr<g.length&&pc<g.length&&g[pr][pc])return false;
+      if(qr>=0&&qc>=0&&qr<g.length&&qc<g.length&&g[qr][qc])return false;
+    }
+  }
+
+  // Apply placement
+  for(let i=0;i<len;i++)g[r+dr*i][c+dc*i]=chars[i];
+
+  // Validate all runs in grid after placement
+  if(!validateRuns(g,[...placed,{word,r,c,dir,id:placed.length}]))return false;
+
+  placed.push({word,r,c,dir,id:placed.length});
+  return true;
+}
+
+function validateRuns(g,placed){
+  const size=g.length;
+  const wordSet=new Set(placed.map(p=>p.word));
+  // Check all horizontal runs
+  for(let r=0;r<size;r++){
+    let run='',start=-1;
+    for(let c=0;c<=size;c++){
+      if(c<size&&g[r][c]){if(start===-1)start=c;run+=g[r][c];}
+      else{if(run.length>=2&&!wordSet.has(run))return false;run='';start=-1;}
+    }
+  }
+  // Check all vertical runs
+  for(let c=0;c<size;c++){
+    let run='',start=-1;
+    for(let r=0;r<=size;r++){
+      if(r<size&&g[r][c]){if(start===-1)start=r;run+=g[r][c];}
+      else{if(run.length>=2&&!wordSet.has(run))return false;run='';start=-1;}
+    }
+  }
+  return true;
+}
+
+function isConnected(placed){
+  if(placed.length<=1)return true;
+  // Build adjacency via shared cells
+  const adj=placed.map(()=>[]);
+  for(let i=0;i<placed.length;i++){
+    for(let j=i+1;j<placed.length;j++){
+      if(wordsShareCell(placed[i],placed[j])){adj[i].push(j);adj[j].push(i);}
+    }
+  }
+  const visited=new Set([0]);
+  const queue=[0];
+  while(queue.length){const n=queue.shift();for(const nb of adj[n])if(!visited.has(nb)){visited.add(nb);queue.push(nb);}}
+  return visited.size===placed.length;
+}
+
+function wordsShareCell(a,b){
+  const aCells=wordCells(a), bCells=wordCells(b);
+  return aCells.some(([r,c])=>bCells.some(([rr,cc])=>r===rr&&c===cc));
+}
+
+function wordCells(p){
+  const cells=[], chars=[...p.word], len=chars.length;
+  const dr=p.dir==='V'?1:0, dc=p.dir==='H'?1:0;
+  for(let i=0;i<len;i++)cells.push([p.r+dr*i,p.c+dc*i]);
+  return cells;
+}
+
+function inWord(r,c,p){return wordCells(p).some(([rr,cc])=>r===rr&&c===cc);}
+
+function revealed(r,c){return puzzle.placed.some(p=>found.has(p.word)&&inWord(r,c,p));}
+
+// ── Render ───────────────────────────────────────────────────────────────────
+function render(){
+  if(!puzzle)return;
+  const g=document.getElementById('grid');
+  g.innerHTML='';
+  g.style.gridTemplateColumns='repeat('+puzzle.size+',1fr)';
+  g.style.gridTemplateRows='repeat('+puzzle.size+',1fr)';
+  for(let r=0;r<puzzle.size;r++){
+    for(let c=0;c<puzzle.size;c++){
+      const d=document.createElement('div');
+      const ch=puzzle.grid[r][c];
+      d.className='cell cellSize '+(ch?'tile':'empty');
+      if(ch){
+        d.textContent=ch;
+        d.addEventListener('click',()=>cellClicked(r,c));
+        if(revealed(r,c))d.classList.add('reveal');
+        if(selected&&inWord(r,c,selected))d.classList.add('selected');
+      }
+      g.appendChild(d);
+    }
+  }
+  document.getElementById('guessBox').textContent=guess;
+  document.getElementById('progress').textContent=found.size+'/'+puzzle.placed.length;
+  document.getElementById('activeLabel').textContent=selected?'Seçili: '+[...selected.word].length+' harfli kelime':'Önce kelime dizisi seç';
+  renderWords();
+  renderAttempts();
+}
+
+function renderWords(){
+  const w=document.getElementById('words');
+  w.innerHTML='';
+  puzzle.placed.forEach(p=>{
+    const d=document.createElement('div');
+    const isOk=found.has(p.word);
+    const isActive=selected&&selected.id===p.id;
+    d.className='wordcard'+(isOk?' ok':'')+(isActive?' active':'');
+    const boxes=document.createElement('div');
+    boxes.className='wboxes';
+    [...p.word].forEach(()=>{const b=document.createElement('div');b.className='wbox';boxes.appendChild(b);});
+    d.appendChild(boxes);
+    if(isOk){const lbl=document.createElement('div');lbl.textContent='✓ '+p.word;lbl.style.fontSize='11px';d.appendChild(lbl);}
+    d.addEventListener('click',e=>{e.stopPropagation();selectWord(p);});
+    w.appendChild(d);
+  });
+}
+
+function renderAttempts(){
+  const a=document.getElementById('attempts');
+  a.innerHTML='';
+  attempts.slice(-4).forEach(x=>{
+    const row=document.createElement('div');
+    row.className='tryRow';
+    row.style.gridTemplateColumns='repeat('+[...x.word].length+',1fr)';
+    [...x.word].forEach((ch,i)=>{
+      const c=document.createElement('div');
+      c.className='tryCell '+x.colors[i];
+      c.textContent=ch;
+      row.appendChild(c);
+    });
+    a.appendChild(row);
+  });
+}
+
+function cellClicked(r,c){
+  const list=puzzle.placed.filter(p=>!found.has(p.word)&&inWord(r,c,p));
+  if(list.length)selectWord(list[0]);
+}
+
+function selectWord(p){
+  if(!p||found.has(p.word))return;
+  selected=p;guess='';attempts=[];resetKeyboard();
+  render();
+  toast([...p.word].length+' harfli kelime seçildi');
+}
+
+// ── Keyboard & input ─────────────────────────────────────────────────────────
+function buildKeyboard(){
+  const el=document.getElementById('keys');el.innerHTML='';
+  [['E','R','T','Y','U','I','O','P','Ğ','Ü'],['A','S','D','F','G','H','J','K','L','Ş','İ'],['Z','C','V','B','N','M','Ö','Ç','SİL']].forEach(row=>{
+    const r=document.createElement('div');r.className='kr';
+    row.forEach(k=>{
+      const b=document.createElement('button');
+      b.className='key'+(k==='SİL'?' action':'');
+      b.dataset.key=k;b.textContent=k;
+      b.addEventListener('click',()=>k==='SİL'?del():add(k));
+      r.appendChild(b);
+    });
+    el.appendChild(r);
+  });
+}
+
+function resetKeyboard(){document.querySelectorAll('#keys .key').forEach(k=>k.classList.remove('green','yellow','gray'));}
+
+function paintKey(ch,color){
+  const k=document.querySelector('#keys .key[data-key="'+ch+'"]');
+  if(!k)return;
+  const rank={gray:1,yellow:2,green:3};
+  const old=['green','yellow','gray'].find(c=>k.classList.contains(c));
+  if(!old||rank[color]>rank[old]){k.classList.remove('green','yellow','gray');k.classList.add(color);}
+}
+
+function add(x){
+  if(!selected)return;
+  if([...guess].length<[...selected.word].length){guess+=x;render();}
+}
+
+function del(){guess=[...guess].slice(0,-1).join('');render();}
+
 function submitGuess(){
-  let v=up(guess);
+  const v=up(guess);
   guess='';
+  if(!selected){render();toast('Önce bir kelime dizisi seç');return;}
+  const wlen=[...selected.word].length;
+  if([...v].length!==wlen){render();toast(wlen+' harfli kelime gir');return;}
+  if(!allWords.has(v)){render();toast('Geçerli bir kelime değil. Deneme hakkın gitmedi.');return;}
 
-  if(!selected){
-    render();
-    toast('Önce bir kelime dizisi seç');
-    return;
-  }
-
-  if([...v].length!==5){
-    render();
-    toast('5 harfli kelime gir');
-    return;
-  }
-
-  // STRICT HARFIST RULE:
-  // No coloring, no keyboard paint, no attempt record unless the word exists in the approved Harfist answer set.
-  if(!VALIDSET.has(v) || BAD.has(v)){
-    render();
-    toast('Bu tahmin geçerli sayılmadı. Deneme hakkın gitmedi.');
-    return;
-  }
-
-  const colors=score(v,selected.word);
-
-  if(mode==='guess'){
-    attempts.push({word:v,colors});
-    [...v].forEach((ch,i)=>paintKey(ch,colors[i]));
-  }
+  const colors=scoreWord(v,selected.word);
+  attempts.push({word:v,colors});
+  [...v].forEach((ch,i)=>paintKey(ch,colors[i]));
 
   if(v===selected.word){
     found.add(selected.word);
-    selected=null;
-    attempts=[];
-    resetKeyboard();
-    render();
-    toast(found.size===puzzle.placed.length?'Tebrikler! Tüm kelimeler bulundu.':'Kelime bulundu!');
+    selected=null;attempts=[];resetKeyboard();render();
+    if(found.size===puzzle.placed.length)toast('Tebrikler! Tüm kelimeler bulundu!');
+    else toast('Kelime bulundu!');
     return;
   }
-
   render();
-  toast(mode==='guess'?'İpucu verildi':'Yanlış kelime');
+  toast('Yanlış kelime, tekrar dene');
 }
-function score(g,t){let gg=[...g],tt=[...t],res=Array(5).fill('gray'),used=Array(5).fill(false);for(let i=0;i<5;i++)if(gg[i]===tt[i]){res[i]='green';used[i]=true;gg[i]=null}for(let i=0;i<5;i++){if(!gg[i])continue;let idx=tt.findIndex((ch,j)=>ch===gg[i]&&!used[j]);if(idx!==-1){res[i]='yellow';used[idx]=true}}return res}
-function hint(){const list=puzzle.placed.filter(p=>!found.has(p.word));if(!list.length)return;const p=selected&&!found.has(selected.word)?selected:list[Math.floor(Math.random()*list.length)];selectWord(p);toast('5 harfli kelime: '+p.word[0]+' ile başlıyor')}
-function toggleWords(){let w=document.getElementById('words');w.classList.toggle('collapsed');document.getElementById('toggle').textContent=w.classList.contains('collapsed')?'▲':'▼'}
-function toast(m){let t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1700)}
-loadWords();
+
+function scoreWord(g,t){
+  const gg=[...g],tt=[...t],len=gg.length;
+  const res=Array(len).fill('gray'),used=Array(len).fill(false);
+  for(let i=0;i<len;i++)if(gg[i]===tt[i]){res[i]='green';used[i]=true;gg[i]=null;}
+  for(let i=0;i<len;i++){if(!gg[i])continue;const idx=tt.findIndex((c,j)=>c===gg[i]&&!used[j]);if(idx!==-1){res[i]='yellow';used[idx]=true;}}
+  return res;
+}
+
+function hint(){
+  const list=puzzle.placed.filter(p=>!found.has(p.word));
+  if(!list.length)return;
+  const p=selected&&!found.has(selected.word)?selected:list[Math.floor(Math.random()*list.length)];
+  selectWord(p);
+  toast([...p.word].length+' harfli kelime: '+p.word[0]+' ile başlıyor');
+}
+
+function toggleWords(){
+  const w=document.getElementById('words');
+  w.classList.toggle('collapsed');
+  document.getElementById('toggle').textContent=w.classList.contains('collapsed')?'▲':'▼';
+}
+
+function toast(m,dur=1700){
+  const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');
+  clearTimeout(t._tid);t._tid=setTimeout(()=>t.classList.remove('show'),dur);
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.ctrlKey||e.metaKey||e.altKey)return;
+  if(e.key==='Enter')submitGuess();
+  else if(e.key==='Backspace')del();
+  else{const k=up(e.key);if([...k].length===1&&TR_SET.has(k))add(k);}
+});
+
+loadDicts();
 </script>
 </body>
 </html>

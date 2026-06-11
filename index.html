@@ -1,1 +1,234 @@
-<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Harfist</title></head><body><h1>Harfist</h1><p>Türkçe kelime oyunu</p><p><a href="kelime-agi.html">Kelime Ağı</a></p><p><a href="progress.html">İlerleme</a></p></body></html>
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Harfist — Klasik</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100dvh;overflow-x:hidden}
+body{background:#07111e;color:#f8fbff;font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;display:flex;justify-content:center}
+.shell{width:100%;max-width:480px;padding:12px 10px;display:flex;flex-direction:column;min-height:100dvh}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,#42d66f,#7dd3fc);display:grid;place-items:center;color:#06120a;font-weight:1000;font-size:22px;flex-shrink:0}
+h1{margin:0;font-size:22px}
+.sub{font-size:12px;color:#9eadbe}
+.navbtn{border:1px solid #ffffff22;border-radius:12px;background:#ffffff12;color:#fff;font-weight:700;padding:8px 11px;font-size:13px;cursor:pointer;text-decoration:none;display:inline-block}
+.navbtn:hover{background:#ffffff20}
+.navrow{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.board{display:grid;grid-template-rows:repeat(6,1fr);gap:5px;margin:0 auto 12px;width:min(100%,310px)}
+.row{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+.tile{aspect-ratio:1;border-radius:8px;border:2px solid #2e3f52;background:transparent;display:grid;place-items:center;font-size:clamp(18px,6vw,28px);font-weight:1000;color:#f8fbff;transition:transform .1s}
+.tile.filled{border-color:#5a7fa0}
+.tile.green{background:#35a853;border-color:#35a853;color:#fff}
+.tile.yellow{background:#d7a72f;border-color:#d7a72f;color:#fff}
+.tile.gray{background:#465163;border-color:#465163;color:#fff}
+.tile.active-row{border-color:#7dd3fc}
+.tile.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+.tile.pop{animation:pop .12s}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
+.keys{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.kr{display:flex;justify-content:center;gap:4px}
+.key{height:42px;min-width:30px;flex:1;max-width:38px;border:0;border-radius:8px;background:#334259;color:#fff;font-weight:900;font-size:clamp(12px,3.5vw,15px);cursor:pointer;transition:background .15s}
+.key.action{max-width:54px;background:#e7edf5;color:#111;font-size:12px}
+.key.green{background:#35a853}
+.key.yellow{background:#d7a72f}
+.key.gray{background:#465163;color:#9aa8b4}
+.msg{min-height:36px;display:grid;place-items:center;font-weight:700;font-size:14px;color:#7dd3fc;margin:4px 0}
+.toast{position:fixed;top:68px;left:50%;transform:translateX(-50%);background:#fff;color:#111827;padding:10px 16px;border-radius:12px;font-weight:900;opacity:0;transition:.2s;max-width:92%;text-align:center;z-index:9;pointer-events:none}
+.toast.show{opacity:1}
+@media(min-width:520px){.shell{padding:18px 16px}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="top">
+    <div class="brand">
+      <div class="logo">H</div>
+      <div><h1>Harfist</h1><div class="sub">Klasik Harfist</div></div>
+    </div>
+    <a class="navbtn" href="kelime-agi.html">Kelime Ağı</a>
+  </div>
+  <div class="navrow">
+    <a class="navbtn" href="progress.html">📊 İlerleme</a>
+  </div>
+  <div id="board" class="board"></div>
+  <div id="msg" class="msg"></div>
+  <div id="keys" class="keys"></div>
+</div>
+<div id="toast" class="toast"></div>
+<script>
+const STATS_KEY='harfist_stats_final_v4';
+const TR_CHARS=['E','R','T','Y','U','I','O','P','Ğ','Ü','A','S','D','F','G','H','J','K','L','Ş','İ','Z','C','V','B','N','M','Ö','Ç'];
+const TR_SET=new Set(TR_CHARS);
+const BAD_WORDS=new Set(['REYRİ','BANİK','BBBBB','GGGGG','MMMMM','KKKKK','OOOOO','AAAAA','CCCCC','ADINA','ORASI','ORAYA','ANALI','TAÇLI','YÜKLÜ','EVDEŞ','AÇMAK','ATMAK','UYMAK','UÇMAK','EŞMEK']);
+const GUARANTEE=['ACEMİ','ARİFE','KİTAP','KALEM','DENİZ','GÜNEŞ','ÇİÇEK','ŞEKER','KÖPEK','BULUT','DÜNYA','SABAH','AKŞAM','İNCİR','BİBER','PİLAV','KİRAZ','ÇİLEK','GÜZEL','SİMİT','BİLGİ','KAPAK','KÜREK','TABAK','ÇANTA','KEMER','DOLAP','RADYO','FIRIN','YAZAR','KÖPRÜ','SICAK','SOĞUK','KÜÇÜK','BÜYÜK','TEMİZ','SAKİN','TARİH','TAKİP','YAKIN','ZAMAN','YEMEK','RESİM','KURAL','MUTLU','HUZUR','SEVGİ','NEHİR','YÜREK','BEYAZ','SİYAH','YEŞİL','ALTIN','KUZEY','GÜNEY','ÇINAR','ARMUT','KAVUN','LİMON','BALIK','SINIF','MASAL','MÜZİK','SANAT','PAZAR','SAHİL','MERAK','CESUR','GÜVEN','BARIŞ','ÇORBA','EKMEK','KAHVE','KAŞIK','ÇATAL','TABLO','PERDE','LAMBA','KİLİM','BAKIR','DEMİR','ÇAMUR','DİLEK','NİYET','HAYAL','DOĞRU','TATLI','TUZLU','GÖLGE','ÇÖZÜM','SAKAL','ERZAK','POTUK','BUNAK','CAHİL','ÖDÜNÇ','BOYUN','SABUN','TARIM','PEDAL','NEZİH','TİNER'];
+const EXTRA_VALID=['PEDAL','NEZİH','CAHİL','ÖDÜNÇ','ERZAK','SAKAL','POTUK','BUNAK','ÇÖZÜM','ACEMİ','BOYUN','SABUN','TARIM','TİNER'];
+const ROWS=6,COLS=5;
+let WORDSET=new Set(),VALIDSET=new Set();
+let answer='',board=[],guessRow=0,gameOver=false,currentGuess='';
+
+function up(s){return(s||'').toString().toLocaleUpperCase('tr-TR').normalize('NFC').replaceAll('Â','A').replaceAll('Î','İ').replaceAll('Û','U')}
+function is5(w){w=up(w);return [...w].length===5&&[...w].every(c=>TR_SET.has(c))}
+function cleanList(a){let seen=new Set();return(Array.isArray(a)?a:[]).map(up).filter(w=>is5(w)&&!BAD_WORDS.has(w)&&!seen.has(w)&&seen.add(w))}
+
+async function loadWords(){
+  let answersRaw=[],allowedRaw=[];
+  try{let r=await fetch('data/answers.json');if(r.ok)answersRaw=await r.json();}catch(e){}
+  try{let r=await fetch('data/allowed_words.json');if(r.ok)allowedRaw=await r.json();}catch(e){}
+  let answers=cleanList(answersRaw);
+  if(answers.length<50)answers=cleanList(GUARANTEE);
+  WORDSET=new Set(answers);
+  let valid=cleanList([...allowedRaw,...answersRaw,...GUARANTEE]);
+  EXTRA_VALID.forEach(w=>{w=up(w);if(is5(w)&&!BAD_WORDS.has(w)&&!valid.includes(w))valid.push(w);});
+  VALIDSET=new Set(valid);
+  startGame();
+}
+
+function startGame(){
+  const pool=[...WORDSET];
+  answer=pool[Math.floor(Math.random()*pool.length)];
+  board=Array.from({length:ROWS},()=>Array(COLS).fill(null).map(()=>({letter:'',state:''})));
+  guessRow=0;gameOver=false;currentGuess='';
+  buildBoard();buildKeyboard();setMsg('');
+}
+
+function buildBoard(){
+  const el=document.getElementById('board');
+  el.innerHTML='';
+  for(let r=0;r<ROWS;r++){
+    const row=document.createElement('div');row.className='row';row.id='row-'+r;
+    for(let c=0;c<COLS;c++){
+      const t=document.createElement('div');t.className='tile';t.id='t-'+r+'-'+c;
+      row.appendChild(t);
+    }
+    el.appendChild(row);
+  }
+  updateBoard();
+}
+
+function updateBoard(){
+  for(let r=0;r<ROWS;r++){
+    for(let c=0;c<COLS;c++){
+      const t=document.getElementById('t-'+r+'-'+c);
+      const cell=board[r][c];
+      const s=cell.state;
+      t.className='tile';
+      if(s){t.classList.add(s);t.textContent=cell.letter;}
+      else{
+        if(!gameOver&&r===guessRow)t.classList.add('active-row');
+        if(r===guessRow){
+          const ch=[...currentGuess][c]||'';
+          t.textContent=ch;
+          if(ch)t.classList.add('filled');
+        } else {
+          t.textContent=cell.letter||'';
+        }
+      }
+    }
+  }
+}
+
+function buildKeyboard(){
+  const el=document.getElementById('keys');el.innerHTML='';
+  [['E','R','T','Y','U','I','O','P','Ğ','Ü'],['A','S','D','F','G','H','J','K','L','Ş','İ'],['GİR','Z','C','V','B','N','M','Ö','Ç','SİL']].forEach(row=>{
+    const r=document.createElement('div');r.className='kr';
+    row.forEach(k=>{
+      const b=document.createElement('button');
+      b.className='key'+(k==='GİR'||k==='SİL'?' action':'');
+      b.textContent=k;b.dataset.key=k;
+      b.addEventListener('click',()=>handleKey(k));
+      r.appendChild(b);
+    });
+    el.appendChild(r);
+  });
+}
+
+function handleKey(k){
+  if(gameOver)return;
+  if(k==='SİL'){currentGuess=[...currentGuess].slice(0,-1).join('');}
+  else if(k==='GİR'){submitGuess();return;}
+  else if(TR_SET.has(k)&&[...currentGuess].length<5){
+    currentGuess+=k;
+    const c=[...currentGuess].length-1;
+    const t=document.getElementById('t-'+guessRow+'-'+c);
+    if(t){t.classList.remove('pop');void t.offsetWidth;t.classList.add('pop');}
+  }
+  updateBoard();
+}
+
+function submitGuess(){
+  const v=up(currentGuess);
+  if([...v].length<5){toast('5 harf gir');shakeRow();return;}
+  if(!VALIDSET.has(v)||BAD_WORDS.has(v)){toast('Geçerli bir kelime değil');shakeRow();return;}
+  const colors=score(v,answer);
+  for(let c=0;c<5;c++)board[guessRow][c]={letter:[...v][c],state:colors[c]};
+  paintKeys(v,colors);
+  currentGuess='';
+  updateBoard();
+  if(v===answer){
+    gameOver=true;
+    setMsg('Tebrikler! 🎉');
+    saveStats(true);
+    setTimeout(()=>toast('Kazandın! Kelime: '+answer,3000),400);
+    return;
+  }
+  guessRow++;
+  if(guessRow>=ROWS){
+    gameOver=true;
+    setMsg('Cevap: '+answer);
+    saveStats(false);
+  }
+}
+
+function score(g,t){
+  const gg=[...g],tt=[...t],res=Array(5).fill('gray'),used=Array(5).fill(false);
+  for(let i=0;i<5;i++)if(gg[i]===tt[i]){res[i]='green';used[i]=true;gg[i]=null;}
+  for(let i=0;i<5;i++){if(!gg[i])continue;const idx=tt.findIndex((c,j)=>c===gg[i]&&!used[j]);if(idx!==-1){res[i]='yellow';used[idx]=true;}}
+  return res;
+}
+
+function paintKeys(v,colors){
+  const rank={gray:1,yellow:2,green:3};
+  [...v].forEach((ch,i)=>{
+    const b=document.querySelector('.key[data-key="'+ch+'"]');
+    if(!b)return;
+    const old=['green','yellow','gray'].find(c=>b.classList.contains(c));
+    if(!old||rank[colors[i]]>rank[old]){b.classList.remove('green','yellow','gray');b.classList.add(colors[i]);}
+  });
+}
+
+function shakeRow(){
+  const r=document.getElementById('row-'+guessRow);
+  if(!r)return;
+  r.querySelectorAll('.tile').forEach(t=>{t.classList.remove('shake');void t.offsetWidth;t.classList.add('shake');});
+}
+
+function setMsg(m){document.getElementById('msg').textContent=m;}
+
+function toast(m,dur=1700){
+  const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');
+  clearTimeout(t._tid);t._tid=setTimeout(()=>t.classList.remove('show'),dur);
+}
+
+function saveStats(won){
+  let s={};try{s=JSON.parse(localStorage.getItem(STATS_KEY)||'{}')}catch(e){}
+  s.p=(s.p||0)+1;
+  if(won){s.w=(s.w||0)+1;s.cs=(s.cs||0)+1;s.ms=Math.max(s.ms||0,s.cs);}
+  else{s.cs=0;}
+  localStorage.setItem(STATS_KEY,JSON.stringify(s));
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.ctrlKey||e.metaKey||e.altKey)return;
+  if(e.key==='Enter')handleKey('GİR');
+  else if(e.key==='Backspace')handleKey('SİL');
+  else{const k=up(e.key);if([...k].length===1&&TR_SET.has(k))handleKey(k);}
+});
+
+loadWords();
+</script>
+</body>
+</html>

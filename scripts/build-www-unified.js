@@ -2,7 +2,7 @@ const fs=require('fs');
 const path=require('path');
 const root=process.cwd();
 const out=path.join(root,'www');
-const files=['index.html','kelime-agi.html','progress.html','app.html'];
+const files=['index.html','kelime-agi.html','progress.html'];
 const dirs=['data','audio','assets'];
 function mkdir(p){fs.mkdirSync(p,{recursive:true});}
 function copyFile(name){const src=path.join(root,name);if(!fs.existsSync(src))return;const dst=path.join(out,name);mkdir(path.dirname(dst));fs.copyFileSync(src,dst);}
