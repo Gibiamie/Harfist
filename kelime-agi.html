@@ -143,9 +143,8 @@ async function loadDicts(){
         const chars=[...w];
         const len=chars.length;
         if(!chars.every(c=>TR_SET.has(c)))return;
-        if(len===3){pool3.add(w);allWords.add(w);}
-        else if(len===4){pool4.add(w);allWords.add(w);}
-        else if(len===5){pool5.add(w);allWords.add(w);}
+        // master_dictionary only extends allWords (guess validation), not answer pools
+        if(len>=3&&len<=5)allWords.add(w);
       });
     }
   }catch(e){}
