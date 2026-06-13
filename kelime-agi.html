@@ -564,7 +564,6 @@ function submitGuess(){
   if(!selected){render();toast('Önce bir kelime dizisi seç');return;}
   const wlen=[...selected.word].length;
   if([...v].length!==wlen){render();toast(wlen+' harfli kelime gir');return;}
-  if(!allWords.has(v)){render();toast('Listede yok');return;}
 
   const colors=scoreWord(v,selected.word);
   attempts.push({word:v,colors});
