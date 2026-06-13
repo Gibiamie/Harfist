@@ -40,7 +40,7 @@ select{border:1px solid #ffffff22;border-radius:14px;background:#0f2033;color:#f
 .key.action{min-width:66px;background:#e7edf5;color:#111}
 .key.green{background:#35a853!important}
 .key.yellow{background:#d7a72f!important}
-.key.gray{background:#465163!important;color:#9aa8b4!important}
+.key.gray{background:#1e2630!important;color:#4a5568!important}
 .wordsHead{display:flex;justify-content:space-between;align-items:center;cursor:pointer}
 .words{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
 .words.collapsed{display:none}
@@ -564,7 +564,7 @@ function submitGuess(){
   if(!selected){render();toast('Önce bir kelime dizisi seç');return;}
   const wlen=[...selected.word].length;
   if([...v].length!==wlen){render();toast(wlen+' harfli kelime gir');return;}
-  if(!allWords.has(v)){render();toast('Geçerli bir kelime değil. Deneme hakkın gitmedi.');return;}
+  if(!allWords.has(v)){render();toast('Listede yok');return;}
 
   const colors=scoreWord(v,selected.word);
   attempts.push({word:v,colors});
