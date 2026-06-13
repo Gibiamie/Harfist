@@ -133,21 +133,17 @@ let pool5=new Set(FB5.filter(w=>[...w].length===5));
 let allWords=new Set([...pool3,...pool4,...pool5]);
 
 async function loadDicts(){
-  try{
-    const r=await fetch('data/master_dictionary.json');
-    if(r.ok){
-      const data=await r.json();
-      const arr=Array.isArray(data)?data:(data.words||[]);
-      arr.forEach(w=>{
-        w=up(w);
-        const chars=[...w];
-        const len=chars.length;
-        if(!chars.every(c=>TR_SET.has(c)))return;
-        // master_dictionary only extends allWords (guess validation), not answer pools
-        if(len>=3&&len<=5)allWords.add(w);
-      });
-    }
-  }catch(e){}
+  const addToValid=(arr)=>{
+    arr.forEach(w=>{
+      w=up(w);
+      const chars=[...w];
+      const len=chars.length;
+      if(!chars.every(c=>TR_SET.has(c)))return;
+      if(len>=3&&len<=5)allWords.add(w);
+    });
+  };
+  try{const r=await fetch('data/allowed_words.json');if(r.ok){const d=await r.json();addToValid(Array.isArray(d)?d:(d.words||[]));};}catch(e){}
+  try{const r=await fetch('data/master_dictionary.json');if(r.ok){const d=await r.json();addToValid(Array.isArray(d)?d:(d.words||[]));};}catch(e){}
   document.getElementById('status').textContent='Türkçe Kelime Ağı';
   buildKeyboard();
   if(!restoreState()) newPuzzle();
